@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI-powered color advisor based on Sanzo Wada's Dictionary of Color Combinations">
+    <meta name="keywords" content="color advisor, sanzo wada, interior design, color combinations, room design">
+    <title>Sanzo Color Advisor - AI-Powered Interior Color Design</title>
+
+    <!-- Preload critical resources -->
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="preload" href="js/App.js" as="script">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/mobile-responsive.css">
+    <link rel="stylesheet" href="css/mobile-enhancements.css">
+    <link rel="stylesheet" href="accessibility.css">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Apple-specific meta tags for PWA -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Sanzo Colors">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+
+    <!-- Microsoft-specific meta tags -->
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="msapplication-TileImage" content="icons/icon-144x144.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23667eea'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z'/%3E%3C/svg%3E">
+
+    <!-- Open Graph meta tags -->
+    <meta property="og:title" content="Sanzo Color Advisor - AI-Powered Interior Color Design">
+    <meta property="og:description" content="Discover perfect color combinations for your home based on Sanzo Wada's timeless color theory">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sanzo-color-advisor.com">
+
+    <!-- Schema.org structured data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Sanzo Color Advisor",
+        "description": "AI-powered color advisor based on Sanzo Wada's Dictionary of Color Combinations",
+        "applicationCategory": "DesignApplication",
+        "operatingSystem": "Web browser"
+    }
+    </script>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen" aria-hidden="true">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p class="loading-text">Loading Sanzo Color Advisor...</p>
+        </div>
+    </div>
+
+    <!-- Accessibility Skip Links -->
+    <div class="skip-links" role="navigation" aria-label="Skip links">
+        <a href="#main-content" class="skip-link">Skip to main content</a>
+        <a href="#color-form" class="skip-link">Skip to color form</a>
+        <a href="#results-section" class="skip-link">Skip to results</a>
+        <a href="#footer" class="skip-link">Skip to footer</a>
+    </div>
+
+    <!-- Screen Reader Announcements -->
+    <div class="sr-only" aria-live="polite" aria-atomic="true" id="sr-announcer"></div>
+    <div class="sr-only" aria-live="assertive" aria-atomic="true" id="sr-announcer-urgent"></div>
+
+    <!-- Header -->
+    <header class="header" role="banner">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo" aria-label="Sanzo Color Advisor">
+                        <svg viewBox="0 0 24 24" class="logo-icon">
+                            <circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.1"/>
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h1 class="app-title">
+                        <span class="title-main">Sanzo Color Advisor</span>
+                        <span class="title-subtitle">AI-Powered Interior Design</span>
+                    </h1>
+                </div>
+
+                <nav class="header-nav" role="navigation" aria-label="Main navigation">
+                    <button class="nav-button" id="accessibility-btn" type="button" aria-label="Accessibility options" aria-expanded="false">
+                        <span>Accessibility</span>
+                    </button>
+                    <button class="nav-button" id="about-btn" type="button" aria-label="Learn about Sanzo Wada">
+                        <span>About</span>
+                    </button>
+                    <button class="nav-button" id="help-btn" type="button" aria-label="Get help">
+                        <span>Help</span>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Application -->
+    <main id="main-content" class="main" role="main">
+        <div class="container">
+
+            <!-- Hero Section -->
+            <section class="hero" aria-labelledby="hero-title">
+                <h2 id="hero-title" class="hero-title">Discover Perfect Color Combinations</h2>
+                <p class="hero-subtitle">
+                    Based on Sanzo Wada's timeless 1918 Dictionary of Color Combinations,
+                    our AI analyzes your space to suggest harmonious colors that create the perfect atmosphere.
+                </p>
+            </section>
+
+            <!-- Color Input Section -->
+            <section class="color-input-section" aria-labelledby="color-input-title">
+                <h3 id="color-input-title" class="section-title">Design Your Space</h3>
+
+                <form class="color-form" id="color-form" novalidate>
+
+                    <!-- Room Configuration -->
+                    <div class="form-group-row">
+                        <div class="form-group">
+                            <label for="room-type" class="form-label required">Room Type</label>
+                            <select id="room-type" name="roomType" class="form-select" required aria-describedby="room-type-help">
+                                <option value="">Select room type</option>
+                                <option value="living_room">Living Room</option>
+                                <option value="bedroom">Bedroom</option>
+                                <option value="child_bedroom">Child's Bedroom</option>
+                                <option value="study">Study/Office</option>
+                                <option value="dining_room">Dining Room</option>
+                                <option value="bathroom">Bathroom</option>
+                                <option value="playroom">Playroom</option>
+                            </select>
+                            <div id="room-type-help" class="form-help">Choose the type of room you're designing</div>
+                        </div>
+
+                        <div class="form-group" id="age-group-container" style="display: none;">
+                            <label for="age-group" class="form-label">Age Group</label>
+                            <select id="age-group" name="ageGroup" class="form-select" aria-describedby="age-group-help">
+                                <option value="">Select age group</option>
+                                <option value="0-3">0-3 years (Toddler)</option>
+                                <option value="4-6">4-6 years (Preschool)</option>
+                                <option value="7-12">7-12 years (School age)</option>
+                                <option value="13-18">13-18 years (Teen)</option>
+                                <option value="adult">Adult</option>
+                                <option value="elderly">Elderly</option>
+                            </select>
+                            <div id="age-group-help" class="form-help">Age group for psychological color recommendations</div>
+                        </div>
+                    </div>
+
+                    <!-- Color Pickers Grid -->
+                    <div class="color-pickers-grid" role="grid" aria-label="Color selection controls">
+
+                        <!-- Wall Color -->
+                        <div class="color-picker-group" role="gridcell">
+                            <label for="wall-color" class="color-label">
+                                <span class="color-label-text">Wall Color</span>
+                                <span class="color-label-optional">(Optional)</span>
+                            </label>
+                            <div class="color-input-wrapper">
+                                <input
+                                    type="color"
+                                    id="wall-color"
+                                    name="wall"
+                                    class="color-input"
+                                    value="#F5F5F5"
+                                    aria-describedby="wall-color-help wall-color-name wall-contrast-info"
+                                    aria-label="Select wall color">
+                                <input
+                                    type="text"
+                                    id="wall-hex"
+                                    class="hex-input"
+                                    value="#F5F5F5"
+                                    placeholder="#F5F5F5"
+                                    pattern="^#[0-9A-Fa-f]{6}$"
+                                    aria-label="Wall color hex value"
+                                    aria-describedby="hex-format-help">
+                                <div
+                                    class="color-preview"
+                                    id="wall-preview"
+                                    style="background-color: #F5F5F5"
+                                    role="img"
+                                    aria-label="Wall color preview: Light gray"
+                                    tabindex="0">
+                                    <div class="color-pattern-overlay pattern-dots" aria-hidden="true"></div>
+                                </div>
+                                <div id="wall-color-name" class="sr-only">Light gray</div>
+                                <div id="wall-contrast-info" class="sr-only">Color contrast information will appear after analysis</div>
+                            </div>
+                            <div id="wall-color-help" class="color-help">Current or desired wall color</div>
+                            <div id="hex-format-help" class="sr-only">Enter color as hex code, for example #FF0000 for red</div>
+                        </div>
+
+                        <!-- Floor Color -->
+                        <div class="color-picker-group" role="gridcell">
+                            <label for="floor-color" class="color-label">
+                                <span class="color-label-text">Floor Color</span>
+                                <span class="color-label-optional">(Optional)</span>
+                            </label>
+                            <div class="color-input-wrapper">
+                                <input
+                                    type="color"
+                                    id="floor-color"
+                                    name="floor"
+                                    class="color-input"
+                                    value="#8B4513"
+                                    aria-describedby="floor-color-help floor-color-name floor-contrast-info"
+                                    aria-label="Select floor color">
+                                <input
+                                    type="text"
+                                    id="floor-hex"
+                                    class="hex-input"
+                                    value="#8B4513"
+                                    placeholder="#8B4513"
+                                    pattern="^#[0-9A-Fa-f]{6}$"
+                                    aria-label="Floor color hex value"
+                                    aria-describedby="hex-format-help">
+                                <div
+                                    class="color-preview"
+                                    id="floor-preview"
+                                    style="background-color: #8B4513"
+                                    role="img"
+                                    aria-label="Floor color preview: Brown"
+                                    tabindex="0">
+                                    <div class="color-pattern-overlay pattern-stripes" aria-hidden="true"></div>
+                                </div>
+                                <div id="floor-color-name" class="sr-only">Brown</div>
+                            </div>
+                            <div id="floor-color-help" class="color-help">Flooring or carpet color</div>
+                        </div>
+
+                        <!-- Furniture Color -->
+                        <div class="color-picker-group" role="gridcell">
+                            <label for="furniture-color" class="color-label">
+                                <span class="color-label-text">Furniture Color</span>
+                                <span class="color-label-optional">(Optional)</span>
+                            </label>
+                            <div class="color-input-wrapper">
+                                <input
+                                    type="color"
+                                    id="furniture-color"
+                                    name="furniture"
+                                    class="color-input"
+                                    value="#A0522D"
+                                    aria-describedby="furniture-color-help furniture-color-name furniture-contrast-info"
+                                    aria-label="Select furniture color">
+                                <input
+                                    type="text"
+                                    id="furniture-hex"
+                                    class="hex-input"
+                                    value="#A0522D"
+                                    placeholder="#A0522D"
+                                    pattern="^#[0-9A-Fa-f]{6}$"
+                                    aria-label="Furniture color hex value"
+                                    aria-describedby="hex-format-help">
+                                <div
+                                    class="color-preview"
+                                    id="furniture-preview"
+                                    style="background-color: #A0522D"
+                                    role="img"
+                                    aria-label="Furniture color preview: Dark brown"
+                                    tabindex="0">
+                                    <div class="color-pattern-overlay pattern-grid" aria-hidden="true"></div>
+                                </div>
+                                <div id="furniture-color-name" class="sr-only">Dark brown</div>
+                            </div>
+                            <div id="furniture-color-help" class="color-help">Main furniture pieces</div>
+                        </div>
+
+                        <!-- Accent Color -->
+                        <div class="color-picker-group" role="gridcell">
+                            <label for="accent-color" class="color-label">
+                                <span class="color-label-text">Accent Color</span>
+                                <span class="color-label-optional">(Optional)</span>
+                            </label>
+                            <div class="color-input-wrapper">
+                                <input
+                                    type="color"
+                                    id="accent-color"
+                                    name="accent"
+                                    class="color-input"
+                                    value="#FF6347"
+                                    aria-describedby="accent-color-help accent-color-name accent-contrast-info"
+                                    aria-label="Select accent color">
+                                <input
+                                    type="text"
+                                    id="accent-hex"
+                                    class="hex-input"
+                                    value="#FF6347"
+                                    placeholder="#FF6347"
+                                    pattern="^#[0-9A-Fa-f]{6}$"
+                                    aria-label="Accent color hex value"
+                                    aria-describedby="hex-format-help">
+                                <div
+                                    class="color-preview"
+                                    id="accent-preview"
+                                    style="background-color: #FF6347"
+                                    role="img"
+                                    aria-label="Accent color preview: Orange-red"
+                                    tabindex="0">
+                                    <div class="color-pattern-overlay pattern-diamonds" aria-hidden="true"></div>
+                                </div>
+                                <div id="accent-color-name" class="sr-only">Orange-red</div>
+                            </div>
+                            <div id="accent-color-help" class="color-help">Decorative elements, pillows, art</div>
+                        </div>
+
+                    </div>
+
+                    <!-- Room Preview -->
+                    <div class="room-preview" id="room-preview" aria-label="Real-time color preview">
+                        <div class="preview-room">
+                            <div class="preview-wall" id="preview-wall"></div>
+                            <div class="preview-floor" id="preview-floor"></div>
+                            <div class="preview-furniture" id="preview-furniture"></div>
+                            <div class="preview-accent" id="preview-accent"></div>
+                        </div>
+                        <p class="preview-label">Live Preview</p>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="reset-btn" aria-label="Reset all colors to defaults">
+                            <span class="btn-icon">🔄</span>
+                            <span>Reset Colors</span>
+                        </button>
+                        <button type="submit" class="btn btn-primary" id="analyze-btn">
+                            <span class="btn-icon">✨</span>
+                            <span>Analyze Colors</span>
+                            <div class="btn-loading" aria-hidden="true">
+                                <div class="btn-spinner"></div>
+                            </div>
+                        </button>
+                    </div>
+
+                </form>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section" id="results-section" aria-labelledby="results-title" style="display: none;">
+                <h3 id="results-title" class="section-title">Color Recommendations</h3>
+
+                <div class="results-container" id="results-container" role="region" aria-live="polite">
+                    <!-- Results will be dynamically inserted here -->
+                </div>
+
+                <!-- Results Actions -->
+                <div class="results-actions" style="display: none;" id="results-actions">
+                    <button type="button" class="btn btn-outline" id="export-btn" aria-label="Export color recommendations">
+                        <span class="btn-icon">📁</span>
+                        <span>Export Results</span>
+                    </button>
+                    <button type="button" class="btn btn-outline" id="share-btn" aria-label="Share color recommendations">
+                        <span class="btn-icon">🔗</span>
+                        <span>Share</span>
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="new-analysis-btn" aria-label="Start new color analysis">
+                        <span class="btn-icon">🆕</span>
+                        <span>New Analysis</span>
+                    </button>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Accessibility Control Panel -->
+    <div class="accessibility-panel" id="accessibility-panel" role="dialog" aria-labelledby="accessibility-title" aria-hidden="true">
+        <div class="panel-backdrop" aria-hidden="true"></div>
+        <div class="panel-content">
+            <header class="panel-header">
+                <h2 id="accessibility-title" class="panel-title">Accessibility Options</h2>
+                <button class="panel-close" id="accessibility-close" aria-label="Close accessibility panel">&times;</button>
+            </header>
+
+            <div class="panel-body">
+                <div class="accessibility-controls">
+
+                    <!-- Visual Preferences -->
+                    <section class="control-group">
+                        <h3 class="control-group-title">Visual Preferences</h3>
+
+                        <div class="control-item">
+                            <label class="control-label">
+                                <input type="checkbox" id="high-contrast-toggle" class="control-checkbox">
+                                <span class="control-text">High Contrast Mode</span>
+                            </label>
+                            <p class="control-description">Enhances contrast for better visibility</p>
+                        </div>
+
+                        <div class="control-item">
+                            <label class="control-label">
+                                <input type="checkbox" id="large-text-toggle" class="control-checkbox">
+                                <span class="control-text">Large Text</span>
+                            </label>
+                            <p class="control-description">Increases font size for better readability</p>
+                        </div>
+
+                        <div class="control-item">
+                            <label class="control-label">
+                                <input type="checkbox" id="color-patterns-toggle" class="control-checkbox">
+                                <span class="control-text">Show Color Patterns</span>
+                            </label>
+                            <p class="control-description">Add visual patterns to distinguish colors</p>
+                        </div>
+                    </section>
+
+                    <!-- Animation Preferences -->
+                    <section class="control-group">
+                        <h3 class="control-group-title">Animation Preferences</h3>
+
+                        <div class="control-item">
+                            <label class="control-label">
+                                <input type="checkbox" id="reduce-motion-toggle" class="control-checkbox">
+                                <span class="control-text">Reduce Motion</span>
+                            </label>
+                            <p class="control-description">Minimize animations and transitions</p>
+                        </div>
+                    </section>
+
+                    <!-- Color Blindness Simulation -->
+                    <section class="control-group">
+                        <h3 class="control-group-title">Color Vision Simulation</h3>
+                        <p class="control-group-description">Test how colors appear with different types of color vision</p>
+
+                        <div class="simulation-controls">
+                            <label class="simulation-item">
+                                <input type="radio" name="colorblind-simulation" value="normal" checked class="simulation-radio">
+                                <span class="simulation-text">Normal Vision</span>
+                            </label>
+
+                            <label class="simulation-item">
+                                <input type="radio" name="colorblind-simulation" value="protanopia" class="simulation-radio">
+                                <span class="simulation-text">Protanopia (Red-blind)</span>
+                            </label>
+
+                            <label class="simulation-item">
+                                <input type="radio" name="colorblind-simulation" value="deuteranopia" class="simulation-radio">
+                                <span class="simulation-text">Deuteranopia (Green-blind)</span>
+                            </label>
+
+                            <label class="simulation-item">
+                                <input type="radio" name="colorblind-simulation" value="tritanopia" class="simulation-radio">
+                                <span class="simulation-text">Tritanopia (Blue-blind)</span>
+                            </label>
+
+                            <label class="simulation-item">
+                                <input type="radio" name="colorblind-simulation" value="achromatopsia" class="simulation-radio">
+                                <span class="simulation-text">Achromatopsia (Monochrome)</span>
+                            </label>
+                        </div>
+                    </section>
+
+                    <!-- Accessibility Testing -->
+                    <section class="control-group">
+                        <h3 class="control-group-title">Accessibility Testing</h3>
+                        <p class="control-group-description">Run automated accessibility tests to check WCAG compliance</p>
+
+                        <div class="control-item">
+                            <button type="button" class="btn btn-outline" id="run-accessibility-test">
+                                <span class="btn-icon">🔍</span>
+                                <span>Run Accessibility Audit</span>
+                            </button>
+                            <p class="control-description">Check WCAG 2.1 AA compliance</p>
+                        </div>
+
+                        <div class="control-item">
+                            <button type="button" class="btn btn-outline" id="test-color-combinations">
+                                <span class="btn-icon">🎨</span>
+                                <span>Test Color Combinations</span>
+                            </button>
+                            <p class="control-description">Analyze current colors for accessibility</p>
+                        </div>
+
+                        <div class="control-item">
+                            <button type="button" class="btn btn-outline" id="validate-implementation">
+                                <span class="btn-icon">🔍</span>
+                                <span>Validate Implementation</span>
+                            </button>
+                            <p class="control-description">Comprehensive validation of accessibility features</p>
+                        </div>
+
+                        <div id="accessibility-test-results" class="test-results" style="display: none;">
+                            <!-- Test results will be inserted here -->
+                        </div>
+                    </section>
+
+                    <!-- Keyboard Navigation Help -->
+                    <section class="control-group">
+                        <h3 class="control-group-title">Keyboard Shortcuts</h3>
+                        <div class="keyboard-shortcuts">
+                            <div class="shortcut-item">
+                                <kbd>Alt + M</kbd>
+                                <span>Skip to main content</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <kbd>Alt + N</kbd>
+                                <span>Skip to navigation</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <kbd>Alt + H</kbd>
+                                <span>Open help</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <kbd>Alt + A</kbd>
+                                <span>Open accessibility panel</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <kbd>Alt + Enter</kbd>
+                                <span>Analyze colors</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <kbd>Alt + R</kbd>
+                                <span>Reset colors</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <kbd>Alt + 1-4</kbd>
+                                <span>Focus color picker</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <kbd>Tab</kbd>
+                                <span>Navigate forward</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <kbd>Shift + Tab</kbd>
+                                <span>Navigate backward</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <kbd>Arrow Keys</kbd>
+                                <span>Navigate color grid</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <kbd>Home/End</kbd>
+                                <span>First/last in row</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <kbd>Ctrl + Home/End</kbd>
+                                <span>First/last in grid</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <kbd>Enter/Space</kbd>
+                                <span>Activate element</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <kbd>C (on color)</kbd>
+                                <span>Copy color value</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <kbd>Escape</kbd>
+                                <span>Close modal/panel</span>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+
+            <footer class="panel-footer">
+                <button class="btn btn-secondary" id="reset-accessibility">Reset to Defaults</button>
+                <button class="btn btn-primary" id="save-accessibility">Save Preferences</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo" id="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <p class="footer-text">
+                        Based on <strong>Sanzo Wada's Dictionary of Color Combinations</strong> (1918)
+                    </p>
+                    <p class="footer-credits">
+                        AI-powered analysis with modern color science
+                    </p>
+                </div>
+                <div class="footer-links">
+                    <a href="#" class="footer-link" id="privacy-link">Privacy</a>
+                    <a href="#" class="footer-link" id="terms-link">Terms</a>
+                    <a href="https://github.com/mattdesl/dictionary-of-colour-combinations" class="footer-link" target="_blank" rel="noopener">Source Data</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+
+    <!-- About Modal -->
+    <div class="modal" id="about-modal" role="dialog" aria-labelledby="about-modal-title" aria-hidden="true">
+        <div class="modal-backdrop" aria-hidden="true"></div>
+        <div class="modal-content">
+            <header class="modal-header">
+                <h2 id="about-modal-title" class="modal-title">About Sanzo Wada</h2>
+                <button class="modal-close" aria-label="Close about dialog">&times;</button>
+            </header>
+            <div class="modal-body">
+                <p>
+                    Sanzo Wada (1883-1967) was a Japanese artist and educator who created one of the most influential
+                    color theory books in design history. His "Dictionary of Color Combinations" (1918) presents
+                    348 color combinations across six different themes.
+                </p>
+                <p>
+                    Our AI system analyzes your space using Wada's timeless principles, combined with modern
+                    color science and psychological research, to suggest harmonious color combinations that
+                    create the perfect atmosphere for any room.
+                </p>
+                <h3>Key Features:</h3>
+                <ul>
+                    <li>Based on authentic Sanzo Wada color combinations</li>
+                    <li>Room-specific psychological color analysis</li>
+                    <li>Age-appropriate recommendations</li>
+                    <li>Real-time color preview</li>
+                    <li>Accessibility-compliant design</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div class="modal" id="help-modal" role="dialog" aria-labelledby="help-modal-title" aria-hidden="true">
+        <div class="modal-backdrop" aria-hidden="true"></div>
+        <div class="modal-content">
+            <header class="modal-header">
+                <h2 id="help-modal-title" class="modal-title">How to Use</h2>
+                <button class="modal-close" aria-label="Close help dialog">&times;</button>
+            </header>
+            <div class="modal-body">
+                <h3>Step 1: Choose Your Room</h3>
+                <p>Select the type of room you're designing. Each room type has specific color recommendations based on its intended use.</p>
+
+                <h3>Step 2: Select Colors (Optional)</h3>
+                <p>Add any existing colors in your room. You can use the color picker or enter hex values directly. All colors are optional.</p>
+
+                <h3>Step 3: Get Recommendations</h3>
+                <p>Click "Analyze Colors" to receive AI-powered recommendations based on Sanzo Wada's color theory.</p>
+
+                <h3>Understanding Results:</h3>
+                <ul>
+                    <li><strong>Confidence Score:</strong> How well the colors work together (higher is better)</li>
+                    <li><strong>Psychological Effects:</strong> How the colors will make you feel</li>
+                    <li><strong>Implementation Tips:</strong> Practical advice for using the colors</li>
+                </ul>
+
+                <h3>Tips for Best Results:</h3>
+                <ul>
+                    <li>Be specific about room type for targeted recommendations</li>
+                    <li>Include age group for children's rooms</li>
+                    <li>Try different combinations to explore options</li>
+                    <li>Consider lighting when implementing suggestions</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Toast -->
+    <div class="toast" id="error-toast" role="alert" aria-live="assertive" aria-hidden="true">
+        <div class="toast-content">
+            <span class="toast-icon">⚠️</span>
+            <span class="toast-message" id="error-message">An error occurred</span>
+            <button class="toast-close" aria-label="Close error message">&times;</button>
+        </div>
+    </div>
+
+    <!-- Success Toast -->
+    <div class="toast toast-success" id="success-toast" role="alert" aria-live="polite" aria-hidden="true">
+        <div class="toast-content">
+            <span class="toast-icon">✅</span>
+            <span class="toast-message" id="success-message">Success!</span>
+            <button class="toast-close" aria-label="Close success message">&times;</button>
+        </div>
+    </div>
+
+    <!-- i18next CDN for internationalization -->
+    <script src="https://unpkg.com/i18next@23.7.6/i18next.min.js"></script>
+
+    <!-- Scripts -->
+    <script src="js/i18n.js" defer></script>
+    <script src="js/LocalizedColorData.js" defer></script>
+    <script src="js/UILocalizer.js" defer></script>
+    <script src="js/LanguageSwitcher.js" defer></script>
+    <script src="js/AccessibilityUtils.js" defer></script>
+    <script src="js/ScreenReaderEnhanced.js" defer></script>
+    <script src="js/ColorBlindnessAdvanced.js" defer></script>
+    <script src="js/AccessibilityTester.js" defer></script>
+    <script src="js/AccessibilityValidator.js" defer></script>
+    <script src="js/AccessibilityController.js" defer></script>
+    <script src="js/MobileTouchHandler.js" defer></script>
+    <script src="js/MobilePerformanceOptimizer.js" defer></script>
+    <script src="js/MobileAccessibilityEnhancer.js" defer></script>
+    <script src="js/ApiClient.js" defer></script>
+    <script src="js/ColorPicker.js" defer></script>
+    <script src="js/ResultDisplay.js" defer></script>
+    <script src="js/App.js" defer></script>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', async () => {
+                try {
+                    const registration = await navigator.serviceWorker.register('/sw.js');
+                    console.log('Service Worker registered successfully:', registration);
+
+                    // Handle service worker updates
+                    registration.addEventListener('updatefound', () => {
+                        const newWorker = registration.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                // Show update notification
+                                if (confirm('New version available! Reload to update?')) {
+                                    newWorker.postMessage({ type: 'SKIP_WAITING' });
+                                    window.location.reload();
+                                }
+                            }
+                        });
+                    });
+
+                    // Listen for controller changes
+                    navigator.serviceWorker.addEventListener('controllerchange', () => {
+                        window.location.reload();
+                    });
+
+                    // Request notification permission for PWA features
+                    if ('Notification' in window && Notification.permission === 'default') {
+                        await Notification.requestPermission();
+                    }
+
+                } catch (error) {
+                    console.error('Service Worker registration failed:', error);
+                }
+            });
+        }
+
+        // Add PWA install prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+
+            // Show install button or banner
+            const installBanner = document.createElement('div');
+            installBanner.className = 'install-banner';
+            installBanner.innerHTML = `
+                <div class="install-content">
+                    <span>Install Sanzo Color Advisor for better mobile experience</span>
+                    <button id="install-btn" class="btn btn-primary">Install</button>
+                    <button id="dismiss-install" class="btn btn-outline">×</button>
+                </div>
+            `;
+            document.body.appendChild(installBanner);
+
+            document.getElementById('install-btn').addEventListener('click', async () => {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log('PWA install outcome:', outcome);
+                installBanner.remove();
+                deferredPrompt = null;
+            });
+
+            document.getElementById('dismiss-install').addEventListener('click', () => {
+                installBanner.remove();
+                deferredPrompt = null;
+            });
+        });
+
+        // Detect if running as PWA
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+            document.documentElement.classList.add('pwa-mode');
+        }
+    </script>
+
+</body>
+</html>

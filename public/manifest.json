@@ -1,0 +1,237 @@
+{
+  "name": "Sanzo Color Advisor",
+  "short_name": "Color Advisor",
+  "description": "AI-powered interior color design based on Sanzo Wada's timeless color combinations",
+  "version": "1.2.0",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#667eea",
+  "background_color": "#ffffff",
+  "lang": "en-US",
+  "dir": "ltr",
+
+  "icons": [
+    {
+      "src": "/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+
+  "screenshots": [
+    {
+      "src": "/screenshots/desktop-screenshot.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Desktop view of color picker interface"
+    },
+    {
+      "src": "/screenshots/mobile-screenshot.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Mobile view with touch-optimized color picker"
+    },
+    {
+      "src": "/screenshots/tablet-screenshot.png",
+      "sizes": "768x1024",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Tablet view showing responsive design"
+    }
+  ],
+
+  "categories": [
+    "design",
+    "productivity",
+    "lifestyle",
+    "utilities"
+  ],
+
+  "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7",
+
+  "prefer_related_applications": false,
+
+  "shortcuts": [
+    {
+      "name": "Quick Color Analysis",
+      "short_name": "Analyze",
+      "description": "Quickly analyze colors for your room",
+      "url": "/?action=quick-analyze",
+      "icons": [
+        {
+          "src": "/icons/shortcut-analyze-96x96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Color Palette Gallery",
+      "short_name": "Gallery",
+      "description": "Browse Sanzo Wada color combinations",
+      "url": "/?action=gallery",
+      "icons": [
+        {
+          "src": "/icons/shortcut-gallery-96x96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Accessibility Settings",
+      "short_name": "Accessibility",
+      "description": "Configure accessibility preferences",
+      "url": "/?action=accessibility",
+      "icons": [
+        {
+          "src": "/icons/shortcut-accessibility-96x96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Camera Color Capture",
+      "short_name": "Capture",
+      "description": "Capture colors using device camera",
+      "url": "/?action=camera-capture",
+      "icons": [
+        {
+          "src": "/icons/shortcut-camera-96x96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+
+  "file_handlers": [
+    {
+      "action": "/import",
+      "accept": {
+        "image/*": [".png", ".jpg", ".jpeg", ".gif", ".webp"],
+        "text/plain": [".txt"],
+        "application/json": [".json"]
+      }
+    }
+  ],
+
+  "protocol_handlers": [
+    {
+      "protocol": "web+sanzocolor",
+      "url": "/?color=%s"
+    }
+  ],
+
+  "share_target": {
+    "action": "/share",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url",
+      "files": [
+        {
+          "name": "images",
+          "accept": ["image/*"]
+        }
+      ]
+    }
+  },
+
+  "display_override": [
+    "window-controls-overlay",
+    "minimal-ui",
+    "standalone",
+    "browser"
+  ],
+
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  },
+
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.sanzo.coloradvisor",
+      "id": "com.sanzo.coloradvisor"
+    },
+    {
+      "platform": "itunes",
+      "url": "https://apps.apple.com/app/sanzo-color-advisor/id123456789",
+      "id": "123456789"
+    }
+  ],
+
+  "scope_extensions": [
+    {
+      "origin": "https://sanzo-color-advisor.com"
+    }
+  ],
+
+  "permissions": [
+    "camera",
+    "notifications",
+    "background-sync",
+    "periodic-background-sync"
+  ],
+
+  "features": [
+    "cross-origin-isolated",
+    "display-mode",
+    "viewport-fit"
+  ]
+}

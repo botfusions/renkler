@@ -1,0 +1,91 @@
+# Docker Compose configuration for testing environment
+# Use with: docker-compose -f docker-compose.yml -f docker-compose.test.yml up
+
+version: '3.8'
+
+services:
+  sanzo-app:
+    build:
+      target: builder
+    environment:
+      - NODE_ENV=test
+      - PORT=3000
+      - LOG_LEVEL=error
+      - RATE_LIMIT_MAX_REQUESTS=1000  # Higher limits for testing
+      - ANALYSIS_RATE_LIMIT_MAX_REQUESTS=100
+    command: ["npm", "run", "test"]
+    profiles:
+      - test
+
+  # Test runner service
+  test-runner:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder
+    container_name: sanzo-test-runner
+    environment:
+      - NODE_ENV=test
+      - CI=true
+    volumes:
+      - .:/app
+      - /app/node_modules
+    working_dir: /app
+    command: ["npm", "run", "test"]
+    networks:
+      - sanzo-network
+    depends_on:
+      - sanzo-app
+
+  # API testing service
+  api-test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder
+    container_name: sanzo-api-test
+    environment:
+      - NODE_ENV=test
+      - API_BASE_URL=http://sanzo-app:3000
+    volumes:
+      - ./tests:/app/tests:ro
+      - ./scripts:/app/scripts:ro
+    working_dir: /app
+    command: ["npm", "run", "test:api"]
+    networks:
+      - sanzo-network
+    depends_on:
+      - sanzo-app
+    profiles:
+      - api-test
+
+  # Performance testing service
+  performance-test:
+    image: loadimpact/k6:latest
+    container_name: sanzo-performance-test
+    volumes:
+      - ./tests/performance:/scripts:ro
+    command: ["run", "/scripts/load-test.js"]
+    environment:
+      - K6_OUT=json=results.json
+      - API_BASE_URL=http://sanzo-app:3000
+    networks:
+      - sanzo-network
+    depends_on:
+      - sanzo-app
+    profiles:
+      - performance
+
+  # Security scanning service
+  security-scan:
+    image: owasp/zap2docker-stable
+    container_name: sanzo-security-scan
+    command: zap-baseline.py -t http://sanzo-app:3000 -J security-report.json
+    volumes:
+      - ./security-reports:/zap/wrk:rw
+    networks:
+      - sanzo-network
+    depends_on:
+      - sanzo-app
+    profiles:
+      - security

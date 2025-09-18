@@ -1,0 +1,149 @@
+# Docker Compose configuration for Sanzo Color Advisor
+# Supports development, testing, and production environments
+
+version: '3.8'
+
+services:
+  # Main application service
+  sanzo-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: sanzo-color-advisor
+    restart: unless-stopped
+    ports:
+      - "${PORT:-3000}:3000"
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - PORT=3000
+      - HOST=0.0.0.0
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:3000,http://localhost:8080}
+      - RATE_LIMIT_WINDOW_MS=${RATE_LIMIT_WINDOW_MS:-900000}
+      - RATE_LIMIT_MAX_REQUESTS=${RATE_LIMIT_MAX_REQUESTS:-100}
+      - ANALYSIS_RATE_LIMIT_WINDOW_MS=${ANALYSIS_RATE_LIMIT_WINDOW_MS:-60000}
+      - ANALYSIS_RATE_LIMIT_MAX_REQUESTS=${ANALYSIS_RATE_LIMIT_MAX_REQUESTS:-10}
+      - CACHE_EXPIRY_MS=${CACHE_EXPIRY_MS:-3600000}
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - TRUST_PROXY=${TRUST_PROXY:-false}
+    volumes:
+      - sanzo-logs:/app/logs
+      - sanzo-cache:/tmp/sanzo-cache
+    networks:
+      - sanzo-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    labels:
+      - "com.sanzo.service=color-advisor"
+      - "com.sanzo.environment=${NODE_ENV:-production}"
+      - "traefik.enable=true"
+      - "traefik.http.routers.sanzo.rule=Host(`${DOMAIN:-localhost}`)"
+      - "traefik.http.services.sanzo.loadbalancer.server.port=3000"
+
+  # Redis cache service (optional for production scaling)
+  redis:
+    image: redis:7-alpine
+    container_name: sanzo-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --maxmemory 128mb --maxmemory-policy allkeys-lru
+    volumes:
+      - sanzo-redis-data:/data
+    networks:
+      - sanzo-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    profiles:
+      - production
+      - scaling
+
+  # Nginx reverse proxy (for production)
+  nginx:
+    image: nginx:alpine
+    container_name: sanzo-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+      - sanzo-logs:/var/log/nginx
+    depends_on:
+      - sanzo-app
+    networks:
+      - sanzo-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    profiles:
+      - production
+
+  # Monitoring service (Prometheus metrics collection)
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: sanzo-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - sanzo-prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=30d'
+      - '--web.enable-lifecycle'
+    networks:
+      - sanzo-network
+    profiles:
+      - monitoring
+
+  # Grafana dashboard service
+  grafana:
+    image: grafana/grafana:latest
+    container_name: sanzo-grafana
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin123}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - sanzo-grafana-data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+    depends_on:
+      - prometheus
+    networks:
+      - sanzo-network
+    profiles:
+      - monitoring
+
+volumes:
+  sanzo-logs:
+    driver: local
+  sanzo-cache:
+    driver: local
+  sanzo-redis-data:
+    driver: local
+  sanzo-prometheus-data:
+    driver: local
+  sanzo-grafana-data:
+    driver: local
+
+networks:
+  sanzo-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

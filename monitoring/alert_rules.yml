@@ -1,0 +1,160 @@
+# Prometheus alert rules for Sanzo Color Advisor
+
+groups:
+  - name: sanzo-alerts
+    rules:
+      # Service availability alerts
+      - alert: SanzoServiceDown
+        expr: up{job="sanzo-app"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Sanzo Color Advisor service is down"
+          description: "The Sanzo Color Advisor service has been down for more than 2 minutes."
+
+      - alert: SanzoHealthCheckFailing
+        expr: sanzo_health_check{check="connectivity"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Sanzo health check failing"
+          description: "The Sanzo Color Advisor health check has been failing for more than 1 minute."
+
+      # Performance alerts
+      - alert: SanzoHighResponseTime
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{job="sanzo-app"}[5m])) > 2
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Sanzo high response time"
+          description: "95th percentile response time is above 2 seconds for more than 5 minutes."
+
+      - alert: SanzoHighErrorRate
+        expr: rate(http_requests_total{job="sanzo-app",status=~"5.."}[5m]) / rate(http_requests_total{job="sanzo-app"}[5m]) > 0.05
+        for: 3m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Sanzo high error rate"
+          description: "Error rate is above 5% for more than 3 minutes."
+
+      # Resource usage alerts
+      - alert: SanzoHighCPUUsage
+        expr: rate(container_cpu_usage_seconds_total{name="sanzo-color-advisor"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Sanzo high CPU usage"
+          description: "CPU usage is above 80% for more than 10 minutes."
+
+      - alert: SanzoHighMemoryUsage
+        expr: (container_memory_usage_bytes{name="sanzo-color-advisor"} / container_spec_memory_limit_bytes{name="sanzo-color-advisor"}) * 100 > 90
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Sanzo high memory usage"
+          description: "Memory usage is above 90% for more than 5 minutes."
+
+      # API specific alerts
+      - alert: SanzoAnalysisEndpointSlow
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{job="sanzo-app",endpoint="/api/analyze"}[5m])) > 5
+        for: 3m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Sanzo analysis endpoint slow"
+          description: "The /api/analyze endpoint 95th percentile response time is above 5 seconds."
+
+      - alert: SanzoRateLimitHit
+        expr: increase(rate_limit_exceeded_total{job="sanzo-app"}[5m]) > 100
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Sanzo rate limit frequently exceeded"
+          description: "Rate limit has been exceeded more than 100 times in the last 5 minutes."
+
+  - name: infrastructure-alerts
+    rules:
+      # System resource alerts
+      - alert: HighDiskUsage
+        expr: (node_filesystem_size_bytes{mountpoint="/"} - node_filesystem_free_bytes{mountpoint="/"}) / node_filesystem_size_bytes{mountpoint="/"} * 100 > 85
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High disk usage"
+          description: "Disk usage is above 85% on root filesystem."
+
+      - alert: SystemLoadHigh
+        expr: node_load1 > 4
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High system load"
+          description: "System load average is above 4 for more than 10 minutes."
+
+      # Docker container alerts
+      - alert: ContainerKilled
+        expr: time() - container_last_seen{name="sanzo-color-advisor"} > 60
+        for: 0m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Container killed"
+          description: "Sanzo Color Advisor container was killed and hasn't restarted."
+
+      - alert: ContainerCpuThrottled
+        expr: rate(container_cpu_cfs_throttled_seconds_total{name="sanzo-color-advisor"}[5m]) > 0.5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Container CPU throttled"
+          description: "Sanzo container CPU is being throttled significantly."
+
+  - name: external-dependencies
+    rules:
+      # Redis alerts (if using Redis)
+      - alert: RedisDown
+        expr: up{job="redis"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Redis is down"
+          description: "Redis service is not responding."
+
+      - alert: RedisHighMemoryUsage
+        expr: redis_memory_used_bytes / redis_memory_max_bytes * 100 > 90
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Redis high memory usage"
+          description: "Redis memory usage is above 90%."
+
+      # SSL certificate expiration
+      - alert: SSLCertificateExpiringSoon
+        expr: probe_ssl_earliest_cert_expiry - time() < 86400 * 30
+        for: 1h
+        labels:
+          severity: warning
+        annotations:
+          summary: "SSL certificate expiring soon"
+          description: "SSL certificate will expire in less than 30 days."
+
+      - alert: SSLCertificateExpired
+        expr: probe_ssl_earliest_cert_expiry - time() <= 0
+        for: 0m
+        labels:
+          severity: critical
+        annotations:
+          summary: "SSL certificate expired"
+          description: "SSL certificate has expired."

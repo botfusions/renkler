@@ -1,0 +1,64 @@
+{
+  "name": "sanzo-color-advisor",
+  "version": "1.0.0",
+  "description": "AI-powered color advisor based on Sanzo Wada's Dictionary of Color Combinations",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:api": "jest --testPathPattern=tests/api",
+    "build": "webpack --mode production",
+    "serve": "http-server public -p 3000",
+    "lint": "eslint src/ --ext .js",
+    "lint:fix": "eslint src/ --ext .js --fix",
+    "sync:github": "node -e \"const SanzoAPI = require('./src/index.js'); const api = new SanzoAPI(); api.githubAPI.syncWithRepository().then(console.log);\"",
+    "sync:web": "node -e \"const SanzoAPI = require('./src/index.js'); const api = new SanzoAPI(); api.webScraper.scrapeAllColorPages().then(console.log);\"",
+    "health": "curl -s http://localhost:3000/api/health | json_pp",
+    "docs": "curl -s http://localhost:3000/api/docs | json_pp",
+    "metrics": "curl -s http://localhost:3000/metrics",
+    "analytics": "curl -s http://localhost:3000/api/analytics/dashboard | json_pp"
+  },
+  "keywords": [
+    "sanzo-wada",
+    "color-combinations",
+    "ai",
+    "color-theory",
+    "design",
+    "palette"
+  ],
+  "author": "Claude Code",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "cheerio": "^1.0.0-rc.12",
+    "chroma-js": "^2.4.2",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express-rate-limit": "^7.1.5",
+    "helmet": "^7.1.0",
+    "compression": "^1.7.4",
+    "morgan": "^1.10.0",
+    "prom-client": "^15.1.0",
+    "winston": "^3.11.0",
+    "winston-daily-rotate-file": "^4.7.1",
+    "response-time": "^2.3.2",
+    "express-prometheus-middleware": "^1.2.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.2",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4",
+    "http-server": "^14.1.1",
+    "eslint": "^8.55.0",
+    "supertest": "^6.3.3"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverage": true,
+    "coverageDirectory": "coverage"
+  }
+}

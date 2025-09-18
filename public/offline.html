@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline - Sanzo Color Advisor</title>
+
+    <style>
+        :root {
+            --color-primary: #667eea;
+            --color-primary-light: #98a9ff;
+            --color-gray-50: #fafafa;
+            --color-gray-100: #f5f5f5;
+            --color-gray-600: #525252;
+            --color-gray-800: #262626;
+            --color-gray-900: #171717;
+            --font-family-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            --border-radius-lg: 1rem;
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family-sans);
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-gray-800);
+            padding: 20px;
+        }
+
+        .offline-container {
+            background: white;
+            padding: 40px;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .offline-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: var(--color-gray-100);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+
+        .offline-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--color-gray-900);
+            margin-bottom: 16px;
+        }
+
+        .offline-message {
+            font-size: 16px;
+            color: var(--color-gray-600);
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .offline-features {
+            text-align: left;
+            background: var(--color-gray-50);
+            padding: 24px;
+            border-radius: var(--border-radius-lg);
+            margin-bottom: 24px;
+        }
+
+        .offline-features h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--color-gray-800);
+            margin-bottom: 16px;
+        }
+
+        .offline-features ul {
+            list-style: none;
+        }
+
+        .offline-features li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: var(--color-gray-600);
+        }
+
+        .offline-features li::before {
+            content: "✓";
+            color: var(--color-primary);
+            font-weight: bold;
+            width: 20px;
+            margin-right: 12px;
+        }
+
+        .offline-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--color-primary-light);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--color-gray-100);
+            color: var(--color-gray-800);
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-gray-200);
+        }
+
+        .connection-status {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .connection-status.online {
+            background: #dcfce7;
+            color: #15803d;
+            display: block;
+        }
+
+        .connection-status.offline {
+            background: #fee2e2;
+            color: #dc2626;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .offline-container {
+                padding: 24px;
+                margin: 0 16px;
+            }
+
+            .offline-title {
+                font-size: 24px;
+            }
+
+            .offline-actions {
+                gap: 16px;
+            }
+
+            .btn {
+                padding: 16px 24px;
+            }
+        }
+
+        /* Loading animation */
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <div class="offline-icon">
+            📱
+        </div>
+
+        <h1 class="offline-title">You're Offline</h1>
+
+        <p class="offline-message">
+            Don't worry! Sanzo Color Advisor works offline too.
+            You can still explore color combinations using our cached color theory database.
+        </p>
+
+        <div class="offline-features">
+            <h3>Available Offline Features:</h3>
+            <ul>
+                <li>Browse cached Sanzo Wada color combinations</li>
+                <li>Analyze colors with offline algorithms</li>
+                <li>Access room-specific recommendations</li>
+                <li>Use accessibility features and testing tools</li>
+                <li>View previously analyzed color schemes</li>
+                <li>Access help and educational content</li>
+            </ul>
+        </div>
+
+        <div class="offline-actions">
+            <button class="btn btn-primary" onclick="goToApp()" id="go-to-app-btn">
+                <span>Continue Offline</span>
+            </button>
+
+            <button class="btn btn-secondary" onclick="tryReconnect()" id="reconnect-btn">
+                <span id="reconnect-text">Try to Reconnect</span>
+                <div class="loading-spinner hidden" id="reconnect-spinner"></div>
+            </button>
+        </div>
+
+        <div class="connection-status" id="connection-status">
+            <!-- Connection status will be updated by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        let isOnline = navigator.onLine;
+        let reconnectAttempts = 0;
+        const maxReconnectAttempts = 5;
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            updateConnectionStatus();
+
+            // Check for cached data
+            checkOfflineCapabilities();
+
+            // Set up connection monitoring
+            window.addEventListener('online', handleOnline);
+            window.addEventListener('offline', handleOffline);
+
+            // Auto-retry connection every 30 seconds
+            setInterval(checkConnection, 30000);
+        });
+
+        function updateConnectionStatus() {
+            const statusElement = document.getElementById('connection-status');
+
+            if (navigator.onLine) {
+                statusElement.className = 'connection-status online';
+                statusElement.textContent = '✓ Connection restored! You can now access all features.';
+
+                // Enable redirect to main app
+                setTimeout(() => {
+                    if (confirm('Connection restored! Would you like to return to the full app?')) {
+                        goToApp();
+                    }
+                }, 2000);
+            } else {
+                statusElement.className = 'connection-status offline';
+                statusElement.textContent = '⚠ You are currently offline. Some features may be limited.';
+            }
+        }
+
+        function handleOnline() {
+            isOnline = true;
+            reconnectAttempts = 0;
+            updateConnectionStatus();
+
+            // Update button states
+            const reconnectBtn = document.getElementById('reconnect-btn');
+            const reconnectText = document.getElementById('reconnect-text');
+            reconnectBtn.disabled = false;
+            reconnectText.textContent = 'Connected!';
+
+            setTimeout(() => {
+                reconnectText.textContent = 'Try to Reconnect';
+            }, 3000);
+        }
+
+        function handleOffline() {
+            isOnline = false;
+            updateConnectionStatus();
+        }
+
+        async function tryReconnect() {
+            if (reconnectAttempts >= maxReconnectAttempts) {
+                alert('Maximum reconnection attempts reached. Please check your internet connection and try again later.');
+                return;
+            }
+
+            const reconnectBtn = document.getElementById('reconnect-btn');
+            const reconnectText = document.getElementById('reconnect-text');
+            const spinner = document.getElementById('reconnect-spinner');
+
+            // Show loading state
+            reconnectBtn.disabled = true;
+            reconnectText.textContent = 'Checking...';
+            spinner.classList.remove('hidden');
+
+            reconnectAttempts++;
+
+            try {
+                // Try to fetch a simple resource
+                const response = await fetch('/api/health', {
+                    method: 'GET',
+                    cache: 'no-cache',
+                    signal: AbortSignal.timeout(5000)
+                });
+
+                if (response.ok) {
+                    // Connection successful
+                    isOnline = true;
+                    updateConnectionStatus();
+                    reconnectText.textContent = 'Connected!';
+
+                    setTimeout(() => {
+                        if (confirm('Connection restored! Redirect to the main app?')) {
+                            goToApp();
+                        }
+                    }, 1000);
+                } else {
+                    throw new Error('Server not responding');
+                }
+
+            } catch (error) {
+                console.error('Reconnection failed:', error);
+                reconnectText.textContent = `Retry ${reconnectAttempts}/${maxReconnectAttempts}`;
+
+                if (reconnectAttempts >= maxReconnectAttempts) {
+                    reconnectText.textContent = 'Connection Failed';
+                    setTimeout(() => {
+                        reconnectText.textContent = 'Try to Reconnect';
+                        reconnectAttempts = 0;
+                    }, 10000);
+                }
+            } finally {
+                // Hide loading state
+                spinner.classList.add('hidden');
+                reconnectBtn.disabled = false;
+            }
+        }
+
+        function goToApp() {
+            // Navigate back to the main app
+            window.location.href = '/';
+        }
+
+        async function checkOfflineCapabilities() {
+            try {
+                // Check if service worker is available
+                if ('serviceWorker' in navigator) {
+                    const registration = await navigator.serviceWorker.ready;
+                    if (registration) {
+                        console.log('Service Worker ready - offline features available');
+                    }
+                }
+
+                // Check for cached data
+                if ('caches' in window) {
+                    const cacheNames = await caches.keys();
+                    if (cacheNames.length > 0) {
+                        console.log('Cached data available:', cacheNames.length, 'caches');
+                    }
+                }
+
+            } catch (error) {
+                console.error('Error checking offline capabilities:', error);
+            }
+        }
+
+        async function checkConnection() {
+            if (!navigator.onLine) return;
+
+            try {
+                const response = await fetch('/api/health', {
+                    method: 'HEAD',
+                    cache: 'no-cache',
+                    signal: AbortSignal.timeout(3000)
+                });
+
+                if (!response.ok && !isOnline) {
+                    // Connection might be restored
+                    handleOnline();
+                }
+
+            } catch (error) {
+                // Still offline or connection issues
+                if (isOnline) {
+                    handleOffline();
+                }
+            }
+        }
+
+        // Prevent default offline page caching
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.addEventListener('message', event => {
+                if (event.data && event.data.type === 'CONNECTION_STATUS') {
+                    isOnline = event.data.online;
+                    updateConnectionStatus();
+                }
+            });
+        }
+
+        // Handle PWA installation prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent Chrome 67 and earlier from automatically showing the prompt
+            e.preventDefault();
+            deferredPrompt = e;
+
+            // Add install button if not already installed
+            if (!window.matchMedia('(display-mode: standalone)').matches) {
+                addInstallButton();
+            }
+        });
+
+        function addInstallButton() {
+            const installBtn = document.createElement('button');
+            installBtn.className = 'btn btn-secondary';
+            installBtn.innerHTML = '<span>📱 Install App</span>';
+            installBtn.addEventListener('click', installApp);
+
+            const actionsContainer = document.querySelector('.offline-actions');
+            actionsContainer.appendChild(installBtn);
+        }
+
+        async function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+
+                if (outcome === 'accepted') {
+                    console.log('User accepted PWA installation');
+                }
+
+                deferredPrompt = null;
+            }
+        }
+
+        // Track app usage for analytics
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.ready.then(registration => {
+                registration.active.postMessage({
+                    type: 'OFFLINE_PAGE_VIEW',
+                    timestamp: Date.now(),
+                    userAgent: navigator.userAgent
+                });
+            });
+        }
+    </script>
+</body>
+</html>

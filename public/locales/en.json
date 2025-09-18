@@ -1,0 +1,439 @@
+{
+  "app": {
+    "title": "Sanzo Color Advisor",
+    "subtitle": "AI-Powered Interior Design",
+    "pageTitle": "Sanzo Color Advisor - AI-Powered Interior Color Design",
+    "metaDescription": "Discover perfect color combinations for your home based on Sanzo Wada's timeless color theory",
+    "loading": "Loading Sanzo Color Advisor..."
+  },
+  "navigation": {
+    "skipToMain": "Skip to main content",
+    "skipToForm": "Skip to color form",
+    "skipToResults": "Skip to results",
+    "skipToFooter": "Skip to footer",
+    "accessibility": "Accessibility",
+    "about": "About",
+    "help": "Help",
+    "language": "Language"
+  },
+  "hero": {
+    "title": "Discover Perfect Color Combinations",
+    "subtitle": "Based on Sanzo Wada's timeless 1918 Dictionary of Color Combinations, our AI analyzes your space to suggest harmonious colors that create the perfect atmosphere."
+  },
+  "form": {
+    "title": "Design Your Space",
+    "roomType": {
+      "label": "Room Type",
+      "required": "Required",
+      "help": "Choose the type of room you're designing",
+      "placeholder": "Select room type",
+      "options": {
+        "living_room": "Living Room",
+        "bedroom": "Bedroom",
+        "child_bedroom": "Child's Bedroom",
+        "study": "Study/Office",
+        "dining_room": "Dining Room",
+        "bathroom": "Bathroom",
+        "playroom": "Playroom"
+      }
+    },
+    "ageGroup": {
+      "label": "Age Group",
+      "help": "Age group for psychological color recommendations",
+      "placeholder": "Select age group",
+      "options": {
+        "0-3": "0-3 years (Toddler)",
+        "4-6": "4-6 years (Preschool)",
+        "7-12": "7-12 years (School age)",
+        "13-18": "13-18 years (Teen)",
+        "adult": "Adult",
+        "elderly": "Elderly"
+      }
+    },
+    "colors": {
+      "wall": {
+        "label": "Wall Color",
+        "optional": "(Optional)",
+        "help": "Current or desired wall color",
+        "ariaLabel": "Select wall color",
+        "hexLabel": "Wall color hex value",
+        "preview": "Wall color preview"
+      },
+      "floor": {
+        "label": "Floor Color",
+        "optional": "(Optional)",
+        "help": "Flooring or carpet color",
+        "ariaLabel": "Select floor color",
+        "hexLabel": "Floor color hex value",
+        "preview": "Floor color preview"
+      },
+      "furniture": {
+        "label": "Furniture Color",
+        "optional": "(Optional)",
+        "help": "Main furniture pieces",
+        "ariaLabel": "Select furniture color",
+        "hexLabel": "Furniture color hex value",
+        "preview": "Furniture color preview"
+      },
+      "accent": {
+        "label": "Accent Color",
+        "optional": "(Optional)",
+        "help": "Decorative elements, pillows, art",
+        "ariaLabel": "Select accent color",
+        "hexLabel": "Accent color hex value",
+        "preview": "Accent color preview"
+      },
+      "hexFormatHelp": "Enter color as hex code, for example #FF0000 for red"
+    },
+    "preview": {
+      "title": "Live Preview",
+      "ariaLabel": "Real-time color preview"
+    },
+    "actions": {
+      "reset": "Reset Colors",
+      "resetAria": "Reset all colors to defaults",
+      "analyze": "Analyze Colors",
+      "analyzeAria": "Analyze color combinations",
+      "analyzing": "Analyzing..."
+    }
+  },
+  "results": {
+    "title": "Color Recommendations",
+    "noResults": "No recommendations available",
+    "loadingResults": "Analyzing your color choices...",
+    "confidence": "Confidence Score",
+    "psychology": "Psychological Effects",
+    "suitability": "Room Suitability",
+    "implementation": "Implementation Tips",
+    "colorHarmony": "Color Harmony",
+    "actions": {
+      "export": "Export Results",
+      "exportAria": "Export color recommendations",
+      "share": "Share",
+      "shareAria": "Share color recommendations",
+      "newAnalysis": "New Analysis",
+      "newAnalysisAria": "Start new color analysis"
+    },
+    "recommendations": {
+      "primary": "Primary Recommendation",
+      "alternative": "Alternative Options",
+      "similar": "Similar Colors"
+    }
+  },
+  "accessibility": {
+    "title": "Accessibility Options",
+    "close": "Close accessibility panel",
+    "groups": {
+      "visual": {
+        "title": "Visual Preferences",
+        "highContrast": {
+          "label": "High Contrast Mode",
+          "description": "Enhances contrast for better visibility"
+        },
+        "largeText": {
+          "label": "Large Text",
+          "description": "Increases font size for better readability"
+        },
+        "colorPatterns": {
+          "label": "Show Color Patterns",
+          "description": "Add visual patterns to distinguish colors"
+        }
+      },
+      "animation": {
+        "title": "Animation Preferences",
+        "reduceMotion": {
+          "label": "Reduce Motion",
+          "description": "Minimize animations and transitions"
+        }
+      },
+      "colorVision": {
+        "title": "Color Vision Simulation",
+        "description": "Test how colors appear with different types of color vision",
+        "options": {
+          "normal": "Normal Vision",
+          "protanopia": "Protanopia (Red-blind)",
+          "deuteranopia": "Deuteranopia (Green-blind)",
+          "tritanopia": "Tritanopia (Blue-blind)",
+          "achromatopsia": "Achromatopsia (Monochrome)"
+        }
+      },
+      "testing": {
+        "title": "Accessibility Testing",
+        "description": "Run automated accessibility tests to check WCAG compliance",
+        "runAudit": {
+          "label": "Run Accessibility Audit",
+          "description": "Check WCAG 2.1 AA compliance"
+        },
+        "testColors": {
+          "label": "Test Color Combinations",
+          "description": "Analyze current colors for accessibility"
+        },
+        "validate": {
+          "label": "Validate Implementation",
+          "description": "Comprehensive validation of accessibility features"
+        }
+      },
+      "keyboard": {
+        "title": "Keyboard Shortcuts",
+        "shortcuts": {
+          "main": "Skip to main content",
+          "navigation": "Skip to navigation",
+          "help": "Open help",
+          "accessibility": "Open accessibility panel",
+          "analyze": "Analyze colors",
+          "reset": "Reset colors",
+          "colorPicker": "Focus color picker",
+          "navigateForward": "Navigate forward",
+          "navigateBackward": "Navigate backward",
+          "navigateGrid": "Navigate color grid",
+          "firstLast": "First/last in row",
+          "firstLastGrid": "First/last in grid",
+          "activate": "Activate element",
+          "copy": "Copy color value",
+          "close": "Close modal/panel"
+        }
+      }
+    },
+    "actions": {
+      "reset": "Reset to Defaults",
+      "save": "Save Preferences"
+    }
+  },
+  "about": {
+    "title": "About Sanzo Wada",
+    "close": "Close about dialog",
+    "content": {
+      "intro": "Sanzo Wada (1883-1967) was a Japanese artist and educator who created one of the most influential color theory books in design history. His \"Dictionary of Color Combinations\" (1918) presents 348 color combinations across six different themes.",
+      "system": "Our AI system analyzes your space using Wada's timeless principles, combined with modern color science and psychological research, to suggest harmonious color combinations that create the perfect atmosphere for any room.",
+      "features": "Key Features:",
+      "featuresList": [
+        "Based on authentic Sanzo Wada color combinations",
+        "Room-specific psychological color analysis",
+        "Age-appropriate recommendations",
+        "Real-time color preview",
+        "Accessibility-compliant design"
+      ]
+    }
+  },
+  "help": {
+    "title": "How to Use",
+    "close": "Close help dialog",
+    "steps": {
+      "step1": {
+        "title": "Step 1: Choose Your Room",
+        "description": "Select the type of room you're designing. Each room type has specific color recommendations based on its intended use."
+      },
+      "step2": {
+        "title": "Step 2: Select Colors (Optional)",
+        "description": "Add any existing colors in your room. You can use the color picker or enter hex values directly. All colors are optional."
+      },
+      "step3": {
+        "title": "Step 3: Get Recommendations",
+        "description": "Click \"Analyze Colors\" to receive AI-powered recommendations based on Sanzo Wada's color theory."
+      }
+    },
+    "understanding": {
+      "title": "Understanding Results:",
+      "items": [
+        "Confidence Score: How well the colors work together (higher is better)",
+        "Psychological Effects: How the colors will make you feel",
+        "Implementation Tips: Practical advice for using the colors"
+      ]
+    },
+    "tips": {
+      "title": "Tips for Best Results:",
+      "items": [
+        "Be specific about room type for targeted recommendations",
+        "Include age group for children's rooms",
+        "Try different combinations to explore options",
+        "Consider lighting when implementing suggestions"
+      ]
+    }
+  },
+  "colors": {
+    "names": {
+      "lightGray": "Light gray",
+      "brown": "Brown",
+      "darkBrown": "Dark brown",
+      "orangeRed": "Orange-red",
+      "white": "White",
+      "black": "Black",
+      "red": "Red",
+      "green": "Green",
+      "blue": "Blue",
+      "yellow": "Yellow",
+      "orange": "Orange",
+      "purple": "Purple",
+      "pink": "Pink",
+      "cyan": "Cyan",
+      "magenta": "Magenta",
+      "beige": "Beige",
+      "cream": "Cream",
+      "ivory": "Ivory",
+      "tan": "Tan",
+      "khaki": "Khaki",
+      "olive": "Olive",
+      "navy": "Navy",
+      "teal": "Teal",
+      "maroon": "Maroon",
+      "silver": "Silver",
+      "gold": "Gold"
+    },
+    "sanzoHarmonies": {
+      "wadaClassicWarm": {
+        "name": "Wada Classic Warm",
+        "psychology": "comfort, warmth, traditional elegance",
+        "cultural": "hospitality, family gathering, home comfort"
+      },
+      "wadaTranquilBlues": {
+        "name": "Wada Tranquil Blues",
+        "psychology": "calm, serenity, mental clarity",
+        "cultural": "ocean wisdom, sky meditation, trust"
+      },
+      "wadaEarthTones": {
+        "name": "Wada Earth Tones",
+        "psychology": "grounding, stability, natural harmony",
+        "cultural": "connection to nature, organic living"
+      },
+      "wadaGentleGreens": {
+        "name": "Wada Gentle Greens",
+        "psychology": "growth, balance, rejuvenation",
+        "cultural": "natural healing, fresh start, eco-consciousness"
+      },
+      "wadaSunsetWarmth": {
+        "name": "Wada Sunset Warmth",
+        "psychology": "energy, creativity, social warmth",
+        "cultural": "evening gatherings, celebration, warmth"
+      },
+      "contemporarySanzoNeutral": {
+        "name": "Contemporary Sanzo Neutral",
+        "psychology": "minimalism, clarity, spaciousness",
+        "cultural": "modern lifestyle, clean aesthetics"
+      },
+      "sanzoChildWonder": {
+        "name": "Sanzo Child Wonder",
+        "psychology": "joy, creativity, learning stimulation",
+        "cultural": "childhood innocence, playful discovery"
+      },
+      "turkishTraditional": {
+        "name": "Turkish Traditional Harmony",
+        "psychology": "cultural pride, heritage connection, dignity",
+        "cultural": "Ottoman art, traditional values, historical depth"
+      },
+      "anatolianWarmth": {
+        "name": "Anatolian Warmth",
+        "psychology": "hospitality, family bonds, warmth",
+        "cultural": "Anatolian hospitality, home concept"
+      },
+      "istanbulElegance": {
+        "name": "Istanbul Elegance",
+        "psychology": "sophistication, cultural richness, history",
+        "cultural": "Istanbul's cosmopolitan spirit, historical layers"
+      }
+    },
+    "traditional": {
+      "turkishRed": "Turkish Red",
+      "nazerBlue": "Nazar Blue",
+      "islamGreen": "Islamic Green",
+      "ottomanGold": "Ottoman Gold",
+      "violetPurple": "Violet Purple",
+      "anatolianEarth": "Anatolian Earth",
+      "honeySaffron": "Honey Saffron",
+      "aegeanSun": "Aegean Sun",
+      "blackSeaGreen": "Black Sea Green",
+      "ceramicRed": "Ceramic Red",
+      "sultanPurple": "Sultan Purple",
+      "dawnRed": "Dawn Red",
+      "dateGreen": "Date Green",
+      "tulipPurple": "Tulip Purple",
+      "beachBeige": "Beach Beige",
+      "oliveOilGreen": "Olive Oil Green"
+    },
+    "cultural": {
+      "patriotic": "Patriotic colors",
+      "protective": "Protective colors",
+      "spiritual": "Spiritual colors",
+      "traditional": "Traditional colors",
+      "natural": "Natural colors",
+      "festive": "Festive colors",
+      "peaceful": "Peaceful colors",
+      "energetic": "Energetic colors"
+    },
+    "recommendations": {
+      "culturalNote": "Cultural recommendation",
+      "traditionalColors": "Traditional colors",
+      "culturalMeaning": "Cultural meaning",
+      "regionalInfluence": "Regional influence",
+      "spiritualSignificance": "Spiritual significance",
+      "patrioticValue": "Patriotic value"
+    }
+  },
+  "errors": {
+    "general": "An error occurred",
+    "networkError": "Network connection error",
+    "validationError": "Please check your input",
+    "apiError": "Server error, please try again",
+    "loadingError": "Failed to load content",
+    "initializationError": "Application failed to initialize",
+    "unsupportedLanguage": "Unsupported language",
+    "translationError": "Translation not available",
+    "retry": "Retry",
+    "cancel": "Cancel",
+    "close": "Close"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "warning": "Warning",
+    "info": "Information",
+    "yes": "Yes",
+    "no": "No",
+    "ok": "OK",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "copy": "Copy",
+    "paste": "Paste",
+    "cut": "Cut",
+    "undo": "Undo",
+    "redo": "Redo",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "export": "Export",
+    "import": "Import",
+    "print": "Print",
+    "share": "Share",
+    "download": "Download",
+    "upload": "Upload",
+    "next": "Next",
+    "previous": "Previous",
+    "first": "First",
+    "last": "Last",
+    "page": "Page",
+    "of": "of",
+    "items": "items",
+    "selected": "selected",
+    "all": "All",
+    "none": "None"
+  },
+  "footer": {
+    "basedOn": "Based on",
+    "sanzoWadaBook": "Sanzo Wada's Dictionary of Color Combinations",
+    "year": "(1918)",
+    "aiPowered": "AI-powered analysis with modern color science",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "sourceData": "Source Data"
+  },
+  "toast": {
+    "error": "An error occurred",
+    "success": "Success!",
+    "warning": "Warning",
+    "info": "Information",
+    "closeError": "Close error message",
+    "closeSuccess": "Close success message"
+  }
+}

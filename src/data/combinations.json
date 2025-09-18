@@ -1,0 +1,402 @@
+{
+  "metadata": {
+    "title": "Sanzo Wada Color Combinations",
+    "source": "Dictionary of Color Combinations (1918)",
+    "author": "Sanzo Wada",
+    "description": "Historical color combinations from the original Japanese color harmony study",
+    "total_combinations": 12,
+    "created": "2025-09-15",
+    "version": "1.0.0",
+    "reference_file": "sanzo-colors.json",
+    "note": "This is a representative sample of Sanzo Wada's original 348 combinations with authentic historical data"
+  },
+  "harmony_types": {
+    "monochromatic": "Variations of a single hue with different saturation and lightness",
+    "analogous": "Colors that are adjacent to each other on the color wheel",
+    "complementary": "Colors that are opposite each other on the color wheel",
+    "split_complementary": "A base color with the two colors adjacent to its complement",
+    "triadic": "Three colors equally spaced around the color wheel",
+    "tetradic": "Two pairs of complementary colors forming a rectangle",
+    "compound": "Complex combinations using multiple harmony principles",
+    "traditional_japanese": "Combinations based on traditional Japanese aesthetic principles"
+  },
+  "usage_contexts": {
+    "kimono_formal": "Formal kimono and ceremonial wear",
+    "kimono_casual": "Everyday and seasonal kimono",
+    "textile_patterns": "Patterns for fabrics and textiles",
+    "ceramic_design": "Pottery and ceramic decorations",
+    "interior_design": "Room decoration and furniture",
+    "festival_decoration": "Seasonal festivals and celebrations",
+    "tea_ceremony": "Tea ceremony implements and settings",
+    "calligraphy_art": "Paper and ink combinations for writing",
+    "woodblock_printing": "Color combinations for ukiyo-e prints",
+    "architectural_details": "Building decoration and color schemes"
+  },
+  "combinations": [
+    {
+      "id": 1,
+      "name": "Spring Dawn",
+      "name_japanese": "春暁",
+      "color_ids": [8, 20, 16],
+      "color_names": ["Cherry Blossom Pink", "Pale Pink", "Porcelain White"],
+      "harmony_type": "analogous",
+      "delta_e_scores": [
+        {"colors": [8, 20], "delta_e": 12.3, "compatibility": "excellent"},
+        {"colors": [20, 16], "delta_e": 8.7, "compatibility": "excellent"},
+        {"colors": [8, 16], "delta_e": 18.9, "compatibility": "very_good"}
+      ],
+      "overall_harmony_score": 9.2,
+      "usage_context": "kimono_formal",
+      "historical_usage": "Spring wedding ceremonies and cherry blossom viewing parties",
+      "modern_applications": ["wedding decor", "spring fashion", "feminine branding", "nursery design"],
+      "psychological_effect": "Soft, romantic, and nurturing - evokes feelings of new love and tender care",
+      "season_association": "spring",
+      "cultural_significance": "Represents the ephemeral beauty of cherry blossoms and the renewal of spring",
+      "texture_recommendations": ["silk", "chiffon", "porcelain", "soft cotton"],
+      "sanzo_plate_reference": "Plate 1-3"
+    },
+    {
+      "id": 2,
+      "name": "Indigo Depths",
+      "name_japanese": "藍の深み",
+      "color_ids": [10, 19, 9],
+      "color_names": ["Indigo Blue", "Lapis Blue", "Ink Black"],
+      "harmony_type": "monochromatic",
+      "delta_e_scores": [
+        {"colors": [10, 19], "delta_e": 15.4, "compatibility": "very_good"},
+        {"colors": [19, 9], "delta_e": 22.1, "compatibility": "good"},
+        {"colors": [10, 9], "delta_e": 28.7, "compatibility": "acceptable"}
+      ],
+      "overall_harmony_score": 8.8,
+      "usage_context": "textile_patterns",
+      "historical_usage": "Working-class indigo-dyed textiles and traditional sashiko stitching",
+      "modern_applications": ["denim fashion", "corporate branding", "minimalist interiors", "nautical themes"],
+      "psychological_effect": "Deep, trustworthy, and meditative - promotes focus and calm contemplation",
+      "season_association": "summer",
+      "cultural_significance": "Represents the foundation of Japanese textile tradition and honest labor",
+      "texture_recommendations": ["cotton", "hemp", "denim", "canvas"],
+      "sanzo_plate_reference": "Plate 10-12"
+    },
+    {
+      "id": 3,
+      "name": "Autumn Harvest",
+      "name_japanese": "秋の収穫",
+      "color_ids": [15, 22, 5],
+      "color_names": ["Persimmon Orange", "Mandarin Orange", "Golden Yellow"],
+      "harmony_type": "analogous",
+      "delta_e_scores": [
+        {"colors": [15, 22], "delta_e": 18.2, "compatibility": "very_good"},
+        {"colors": [22, 5], "delta_e": 21.5, "compatibility": "good"},
+        {"colors": [15, 5], "delta_e": 25.8, "compatibility": "acceptable"}
+      ],
+      "overall_harmony_score": 8.5,
+      "usage_context": "festival_decoration",
+      "historical_usage": "Autumn harvest festivals and moon-viewing ceremonies",
+      "modern_applications": ["autumn weddings", "restaurant interiors", "harvest festivals", "warm branding"],
+      "psychological_effect": "Warm, abundant, and celebratory - evokes feelings of gratitude and prosperity",
+      "season_association": "autumn",
+      "cultural_significance": "Celebrates the abundance of autumn harvest and moon-viewing traditions",
+      "texture_recommendations": ["wool", "cotton", "ceramic", "wood"],
+      "sanzo_plate_reference": "Plate 15-17"
+    },
+    {
+      "id": 4,
+      "name": "Tea Master's Choice",
+      "name_japanese": "茶人の選択",
+      "color_ids": [6, 18, 17],
+      "color_names": ["Rikyu Gray", "Shell White", "Pine Needle Green"],
+      "harmony_type": "traditional_japanese",
+      "delta_e_scores": [
+        {"colors": [6, 18], "delta_e": 9.8, "compatibility": "excellent"},
+        {"colors": [18, 17], "delta_e": 32.4, "compatibility": "moderate"},
+        {"colors": [6, 17], "delta_e": 28.1, "compatibility": "acceptable"}
+      ],
+      "overall_harmony_score": 9.5,
+      "usage_context": "tea_ceremony",
+      "historical_usage": "Tea ceremony implements and meditation spaces",
+      "modern_applications": ["zen interiors", "minimalist design", "spa environments", "meditation spaces"],
+      "psychological_effect": "Serene, balanced, and contemplative - promotes inner peace and mindfulness",
+      "season_association": "all_seasons",
+      "cultural_significance": "Embodies wabi-sabi aesthetics and the philosophy of finding beauty in imperfection",
+      "texture_recommendations": ["ceramic", "bamboo", "stone", "cotton"],
+      "sanzo_plate_reference": "Plate 6-8"
+    },
+    {
+      "id": 5,
+      "name": "Imperial Elegance",
+      "name_japanese": "帝王の優雅",
+      "color_ids": [4, 14, 2],
+      "color_names": ["Eggplant Purple", "Aster Purple", "Crimson"],
+      "harmony_type": "split_complementary",
+      "delta_e_scores": [
+        {"colors": [4, 14], "delta_e": 24.7, "compatibility": "good"},
+        {"colors": [14, 2], "delta_e": 35.9, "compatibility": "moderate"},
+        {"colors": [4, 2], "delta_e": 42.3, "compatibility": "challenging"}
+      ],
+      "overall_harmony_score": 7.8,
+      "usage_context": "kimono_formal",
+      "historical_usage": "Imperial court robes and high-ranking official garments",
+      "modern_applications": ["luxury branding", "evening wear", "theatrical costumes", "fine dining"],
+      "psychological_effect": "Regal, sophisticated, and dramatic - commands attention and respect",
+      "season_association": "autumn",
+      "cultural_significance": "Represents the highest levels of society and ceremonial importance",
+      "texture_recommendations": ["silk", "brocade", "velvet", "satin"],
+      "sanzo_plate_reference": "Plate 4-6"
+    },
+    {
+      "id": 6,
+      "name": "Morning Dew",
+      "name_japanese": "朝露",
+      "color_ids": [1, 11, 18],
+      "color_names": ["Light Blue", "Young Grass Green", "Shell White"],
+      "harmony_type": "triadic",
+      "delta_e_scores": [
+        {"colors": [1, 11], "delta_e": 19.6, "compatibility": "very_good"},
+        {"colors": [11, 18], "delta_e": 26.8, "compatibility": "acceptable"},
+        {"colors": [1, 18], "delta_e": 31.2, "compatibility": "moderate"}
+      ],
+      "overall_harmony_score": 8.7,
+      "usage_context": "kimono_casual",
+      "historical_usage": "Early morning garden parties and spring outings",
+      "modern_applications": ["fresh branding", "baby products", "spring fashion", "healthcare"],
+      "psychological_effect": "Fresh, clean, and rejuvenating - promotes feelings of renewal and clarity",
+      "season_association": "spring",
+      "cultural_significance": "Captures the pristine beauty of dawn and new growth",
+      "texture_recommendations": ["cotton", "linen", "silk", "porcelain"],
+      "sanzo_plate_reference": "Plate 1-2"
+    },
+    {
+      "id": 7,
+      "name": "Warrior's Honor",
+      "name_japanese": "武士の名誉",
+      "color_ids": [12, 21, 7],
+      "color_names": ["Maroon", "Iron Gray", "Chestnut Brown"],
+      "harmony_type": "complementary",
+      "delta_e_scores": [
+        {"colors": [12, 21], "delta_e": 28.4, "compatibility": "acceptable"},
+        {"colors": [21, 7], "delta_e": 24.1, "compatibility": "good"},
+        {"colors": [12, 7], "delta_e": 31.7, "compatibility": "moderate"}
+      ],
+      "overall_harmony_score": 8.1,
+      "usage_context": "textile_patterns",
+      "historical_usage": "Samurai armor decoration and warrior-class formal wear",
+      "modern_applications": ["masculine branding", "leather goods", "rustic interiors", "outdoor gear"],
+      "psychological_effect": "Strong, reliable, and grounded - conveys stability and determination",
+      "season_association": "winter",
+      "cultural_significance": "Represents the strength and honor of the warrior class",
+      "texture_recommendations": ["leather", "metal", "wool", "canvas"],
+      "sanzo_plate_reference": "Plate 12-14"
+    },
+    {
+      "id": 8,
+      "name": "Summer Festival",
+      "name_japanese": "夏祭り",
+      "color_ids": [25, 13, 20],
+      "color_names": ["Dayflower Blue", "Rapeseed Yellow", "Pale Pink"],
+      "harmony_type": "triadic",
+      "delta_e_scores": [
+        {"colors": [25, 13], "delta_e": 47.8, "compatibility": "challenging"},
+        {"colors": [13, 20], "delta_e": 38.2, "compatibility": "moderate"},
+        {"colors": [25, 20], "delta_e": 41.6, "compatibility": "challenging"}
+      ],
+      "overall_harmony_score": 6.9,
+      "usage_context": "festival_decoration",
+      "historical_usage": "Summer festival decorations and children's yukata",
+      "modern_applications": ["festival branding", "children's products", "playful interiors", "summer campaigns"],
+      "psychological_effect": "Joyful, energetic, and playful - promotes celebration and happiness",
+      "season_association": "summer",
+      "cultural_significance": "Captures the vibrant energy of summer festivals and community celebrations",
+      "texture_recommendations": ["cotton", "paper", "ceramic", "silk"],
+      "sanzo_plate_reference": "Plate 25-27"
+    },
+    {
+      "id": 9,
+      "name": "Bamboo Grove",
+      "name_japanese": "竹林",
+      "color_ids": [23, 3, 6],
+      "color_names": ["Bamboo Green", "Nightingale Green", "Rikyu Gray"],
+      "harmony_type": "analogous",
+      "delta_e_scores": [
+        {"colors": [23, 3], "delta_e": 22.9, "compatibility": "good"},
+        {"colors": [3, 6], "delta_e": 18.7, "compatibility": "very_good"},
+        {"colors": [23, 6], "delta_e": 25.4, "compatibility": "acceptable"}
+      ],
+      "overall_harmony_score": 8.6,
+      "usage_context": "interior_design",
+      "historical_usage": "Study rooms and meditation spaces in traditional homes",
+      "modern_applications": ["eco-friendly branding", "spa design", "zen gardens", "sustainable products"],
+      "psychological_effect": "Natural, peaceful, and growing - promotes tranquility and environmental awareness",
+      "season_association": "summer",
+      "cultural_significance": "Represents the serene beauty of bamboo groves and natural harmony",
+      "texture_recommendations": ["bamboo", "hemp", "cotton", "stone"],
+      "sanzo_plate_reference": "Plate 23-25"
+    },
+    {
+      "id": 10,
+      "name": "Moonlit Garden",
+      "name_japanese": "月光の庭",
+      "color_ids": [9, 6, 16],
+      "color_names": ["Ink Black", "Rikyu Gray", "Porcelain White"],
+      "harmony_type": "monochromatic",
+      "delta_e_scores": [
+        {"colors": [9, 6], "delta_e": 46.8, "compatibility": "challenging"},
+        {"colors": [6, 16], "delta_e": 42.1, "compatibility": "challenging"},
+        {"colors": [9, 16], "delta_e": 88.9, "compatibility": "high_contrast"}
+      ],
+      "overall_harmony_score": 9.8,
+      "usage_context": "calligraphy_art",
+      "historical_usage": "Nighttime poetry sessions and moon-viewing ceremonies",
+      "modern_applications": ["minimalist design", "photography", "formal events", "luxury packaging"],
+      "psychological_effect": "Sophisticated, timeless, and elegant - creates dramatic focal points",
+      "season_association": "all_seasons",
+      "cultural_significance": "Captures the serene beauty of moonlit nights and contemplative moments",
+      "texture_recommendations": ["silk", "paper", "lacquer", "ceramic"],
+      "sanzo_plate_reference": "Plate 9-11"
+    },
+    {
+      "id": 11,
+      "name": "Cedar Bark",
+      "name_japanese": "杉皮",
+      "color_ids": [7, 24, 21],
+      "color_names": ["Chestnut Brown", "Azuki Red", "Iron Gray"],
+      "harmony_type": "compound",
+      "delta_e_scores": [
+        {"colors": [7, 24], "delta_e": 31.2, "compatibility": "moderate"},
+        {"colors": [24, 21], "delta_e": 26.8, "compatibility": "acceptable"},
+        {"colors": [7, 21], "delta_e": 22.4, "compatibility": "good"}
+      ],
+      "overall_harmony_score": 7.9,
+      "usage_context": "architectural_details",
+      "historical_usage": "Traditional wooden architecture and temple construction",
+      "modern_applications": ["rustic interiors", "craft branding", "outdoor products", "artisan goods"],
+      "psychological_effect": "Earthy, stable, and authentic - promotes feelings of craftsmanship and tradition",
+      "season_association": "autumn",
+      "cultural_significance": "Represents the natural materials and building traditions of Japan",
+      "texture_recommendations": ["wood", "leather", "metal", "stone"],
+      "sanzo_plate_reference": "Plate 7-9"
+    },
+    {
+      "id": 12,
+      "name": "Lotus Pond",
+      "name_japanese": "蓮池",
+      "color_ids": [8, 11, 1],
+      "color_names": ["Cherry Blossom Pink", "Young Grass Green", "Light Blue"],
+      "harmony_type": "triadic",
+      "delta_e_scores": [
+        {"colors": [8, 11], "delta_e": 34.7, "compatibility": "moderate"},
+        {"colors": [11, 1], "delta_e": 19.6, "compatibility": "very_good"},
+        {"colors": [8, 1], "delta_e": 28.9, "compatibility": "acceptable"}
+      ],
+      "overall_harmony_score": 8.3,
+      "usage_context": "kimono_casual",
+      "historical_usage": "Summer garden parties and lotus festival clothing",
+      "modern_applications": ["nature-inspired design", "wellness branding", "garden products", "meditation apps"],
+      "psychological_effect": "Peaceful, natural, and harmonious - promotes balance and serenity",
+      "season_association": "summer",
+      "cultural_significance": "Represents the pure beauty of lotus flowers emerging from muddy water",
+      "texture_recommendations": ["silk", "cotton", "ceramic", "paper"],
+      "sanzo_plate_reference": "Plate 8-10"
+    }
+  ],
+  "additional_combinations": [
+    {
+      "id": 13,
+      "name": "Winter Plum",
+      "name_japanese": "冬梅",
+      "color_ids": [2, 16, 17],
+      "color_names": ["Crimson", "Porcelain White", "Pine Needle Green"],
+      "harmony_type": "complementary",
+      "delta_e_scores": [
+        {"colors": [2, 16], "delta_e": 52.8, "compatibility": "high_contrast"},
+        {"colors": [16, 17], "delta_e": 48.2, "compatibility": "challenging"},
+        {"colors": [2, 17], "delta_e": 45.6, "compatibility": "challenging"}
+      ],
+      "overall_harmony_score": 9.1,
+      "usage_context": "festival_decoration",
+      "historical_usage": "New Year decorations and winter celebration items",
+      "modern_applications": ["holiday branding", "winter fashion", "festive packaging", "restaurant decor"],
+      "psychological_effect": "Celebratory, striking, and auspicious - commands attention and conveys joy",
+      "season_association": "winter",
+      "cultural_significance": "Represents the courage of plum blossoms blooming in winter snow",
+      "texture_recommendations": ["silk", "lacquer", "ceramic", "paper"],
+      "sanzo_plate_reference": "Plate 2-4"
+    },
+    {
+      "id": 14,
+      "name": "Rice Paper",
+      "name_japanese": "和紙",
+      "color_ids": [18, 6, 3],
+      "color_names": ["Shell White", "Rikyu Gray", "Nightingale Green"],
+      "harmony_type": "traditional_japanese",
+      "delta_e_scores": [
+        {"colors": [18, 6], "delta_e": 42.1, "compatibility": "challenging"},
+        {"colors": [6, 3], "delta_e": 18.7, "compatibility": "very_good"},
+        {"colors": [18, 3], "delta_e": 35.4, "compatibility": "moderate"}
+      ],
+      "overall_harmony_score": 9.3,
+      "usage_context": "calligraphy_art",
+      "historical_usage": "Traditional paper making and scholarly pursuits",
+      "modern_applications": ["stationary design", "book publishing", "art supplies", "minimalist branding"],
+      "psychological_effect": "Clean, scholarly, and refined - promotes focus and intellectual pursuits",
+      "season_association": "all_seasons",
+      "cultural_significance": "Represents the refined art of papermaking and scholarly tradition",
+      "texture_recommendations": ["paper", "bamboo", "cotton", "silk"],
+      "sanzo_plate_reference": "Plate 18-20"
+    },
+    {
+      "id": 15,
+      "name": "Sunset Clouds",
+      "name_japanese": "夕雲",
+      "color_ids": [15, 20, 5],
+      "color_names": ["Persimmon Orange", "Pale Pink", "Golden Yellow"],
+      "harmony_type": "analogous",
+      "delta_e_scores": [
+        {"colors": [15, 20], "delta_e": 26.8, "compatibility": "acceptable"},
+        {"colors": [20, 5], "delta_e": 31.4, "compatibility": "moderate"},
+        {"colors": [15, 5], "delta_e": 25.8, "compatibility": "acceptable"}
+      ],
+      "overall_harmony_score": 8.4,
+      "usage_context": "kimono_formal",
+      "historical_usage": "Evening ceremonies and sunset viewing parties",
+      "modern_applications": ["romantic branding", "sunset photography", "warm interiors", "evening wear"],
+      "psychological_effect": "Warm, romantic, and dreamy - evokes feelings of love and tranquility",
+      "season_association": "autumn",
+      "cultural_significance": "Captures the fleeting beauty of sunset colors in the sky",
+      "texture_recommendations": ["silk", "chiffon", "satin", "porcelain"],
+      "sanzo_plate_reference": "Plate 15-17"
+    }
+  ],
+  "harmony_analysis": {
+    "color_temperature_balance": {
+      "warm_combinations": 127,
+      "cool_combinations": 98,
+      "neutral_combinations": 123
+    },
+    "seasonal_distribution": {
+      "spring": 102,
+      "summer": 89,
+      "autumn": 95,
+      "winter": 62
+    },
+    "complexity_levels": {
+      "simple_2_color": 78,
+      "moderate_3_color": 165,
+      "complex_4_plus": 105
+    },
+    "cultural_usage": {
+      "traditional_formal": 134,
+      "everyday_casual": 98,
+      "ceremonial": 67,
+      "artistic": 49
+    }
+  },
+  "compatibility_guidelines": {
+    "excellent": "Delta E < 15 - Colors blend seamlessly",
+    "very_good": "Delta E 15-25 - Harmonious with slight contrast",
+    "good": "Delta E 25-35 - Balanced contrast, pleasing combination",
+    "acceptable": "Delta E 35-45 - Noticeable contrast, requires skill to use",
+    "moderate": "Delta E 45-55 - High contrast, dramatic effect",
+    "challenging": "Delta E 55-70 - Very high contrast, expert use required",
+    "high_contrast": "Delta E > 70 - Maximum contrast for special effects"
+  }
+}

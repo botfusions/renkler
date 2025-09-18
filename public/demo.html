@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanzo Color Advisor - Demo</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Demo-specific styles */
+        .demo-info {
+            background: var(--color-info);
+            color: var(--color-white);
+            padding: var(--space-md);
+            border-radius: var(--border-radius-md);
+            margin-bottom: var(--space-xl);
+            text-align: center;
+        }
+
+        .demo-api-status {
+            background: var(--color-gray-100);
+            border-radius: var(--border-radius-md);
+            padding: var(--space-md);
+            margin-bottom: var(--space-xl);
+            border-left: 4px solid var(--color-warning);
+        }
+
+        .api-status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: var(--space-xs);
+        }
+
+        .api-status-indicator.connected { background: var(--color-success); }
+        .api-status-indicator.disconnected { background: var(--color-error); }
+        .api-status-indicator.checking { background: var(--color-warning); }
+
+        .demo-actions {
+            display: flex;
+            gap: var(--space-md);
+            margin-bottom: var(--space-xl);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Demo notification -->
+    <div class="demo-info">
+        <p><strong>Demo Mode:</strong> This is a demonstration of the Sanzo Color Advisor frontend.
+        The API may not be running, so you can test the interface functionality.</p>
+    </div>
+
+    <!-- API Status -->
+    <div class="demo-api-status" id="api-status">
+        <p><span class="api-status-indicator checking" id="api-indicator"></span>
+        <strong>API Status:</strong> <span id="api-status-text">Checking connection...</span></p>
+    </div>
+
+    <!-- Demo Actions -->
+    <div class="demo-actions">
+        <button class="btn btn-secondary" id="demo-fill-form">
+            <span class="btn-icon">🎨</span>
+            <span>Fill Demo Data</span>
+        </button>
+        <button class="btn btn-secondary" id="demo-random-colors">
+            <span class="btn-icon">🎲</span>
+            <span>Random Colors</span>
+        </button>
+        <button class="btn btn-secondary" id="demo-test-api">
+            <span class="btn-icon">🔧</span>
+            <span>Test API</span>
+        </button>
+        <button class="btn btn-secondary" id="demo-mock-result">
+            <span class="btn-icon">📊</span>
+            <span>Show Mock Result</span>
+        </button>
+    </div>
+
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="skip-link" tabindex="1">Skip to main content</a>
+
+    <!-- Header -->
+    <header class="header" role="banner">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo" aria-label="Sanzo Color Advisor">
+                        <svg viewBox="0 0 24 24" class="logo-icon">
+                            <circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.1"/>
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h1 class="app-title">
+                        <span class="title-main">Sanzo Color Advisor</span>
+                        <span class="title-subtitle">AI-Powered Interior Design - Demo</span>
+                    </h1>
+                </div>
+
+                <nav class="header-nav" role="navigation" aria-label="Main navigation">
+                    <button class="nav-button" id="about-btn" type="button" aria-label="Learn about Sanzo Wada">
+                        <span>About</span>
+                    </button>
+                    <button class="nav-button" id="help-btn" type="button" aria-label="Get help">
+                        <span>Help</span>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Application -->
+    <main id="main-content" class="main" role="main">
+        <div class="container">
+
+            <!-- Hero Section -->
+            <section class="hero" aria-labelledby="hero-title">
+                <h2 id="hero-title" class="hero-title">Discover Perfect Color Combinations</h2>
+                <p class="hero-subtitle">
+                    Based on Sanzo Wada's timeless 1918 Dictionary of Color Combinations,
+                    our AI analyzes your space to suggest harmonious colors that create the perfect atmosphere.
+                </p>
+            </section>
+
+            <!-- Color Input Section -->
+            <section class="color-input-section" aria-labelledby="color-input-title">
+                <h3 id="color-input-title" class="section-title">Design Your Space</h3>
+
+                <form class="color-form" id="color-form" novalidate>
+
+                    <!-- Room Configuration -->
+                    <div class="form-group-row">
+                        <div class="form-group">
+                            <label for="room-type" class="form-label required">Room Type</label>
+                            <select id="room-type" name="roomType" class="form-select" required aria-describedby="room-type-help">
+                                <option value="">Select room type</option>
+                                <option value="living_room">Living Room</option>
+                                <option value="bedroom">Bedroom</option>
+                                <option value="child_bedroom">Child's Bedroom</option>
+                                <option value="study">Study/Office</option>
+                                <option value="dining_room">Dining Room</option>
+                                <option value="bathroom">Bathroom</option>
+                                <option value="playroom">Playroom</option>
+                            </select>
+                            <div id="room-type-help" class="form-help">Choose the type of room you're designing</div>
+                        </div>
+
+                        <div class="form-group" id="age-group-container" style="display: none;">
+                            <label for="age-group" class="form-label">Age Group</label>
+                            <select id="age-group" name="ageGroup" class="form-select" aria-describedby="age-group-help">
+                                <option value="">Select age group</option>
+                                <option value="0-3">0-3 years (Toddler)</option>
+                                <option value="4-6">4-6 years (Preschool)</option>
+                                <option value="7-12">7-12 years (School age)</option>
+                                <option value="13-18">13-18 years (Teen)</option>
+                                <option value="adult">Adult</option>
+                                <option value="elderly">Elderly</option>
+                            </select>
+                            <div id="age-group-help" class="form-help">Age group for psychological color recommendations</div>
+                        </div>
+                    </div>
+
+                    <!-- Color Pickers -->
+                    <div class="color-pickers-grid">
+
+                        <!-- Wall Color -->
+                        <div class="color-picker-group">
+                            <label for="wall-color" class="color-label">
+                                <span class="color-label-text">Wall Color</span>
+                                <span class="color-label-optional">(Optional)</span>
+                            </label>
+                            <div class="color-input-wrapper">
+                                <input type="color" id="wall-color" name="wall" class="color-input" value="#F5F5F5" aria-describedby="wall-color-help">
+                                <input type="text" id="wall-hex" class="hex-input" value="#F5F5F5" placeholder="#F5F5F5" pattern="^#[0-9A-Fa-f]{6}$" aria-label="Wall color hex value">
+                                <div class="color-preview" id="wall-preview" style="background-color: #F5F5F5"></div>
+                            </div>
+                            <div id="wall-color-help" class="color-help">Current or desired wall color</div>
+                        </div>
+
+                        <!-- Floor Color -->
+                        <div class="color-picker-group">
+                            <label for="floor-color" class="color-label">
+                                <span class="color-label-text">Floor Color</span>
+                                <span class="color-label-optional">(Optional)</span>
+                            </label>
+                            <div class="color-input-wrapper">
+                                <input type="color" id="floor-color" name="floor" class="color-input" value="#8B4513">
+                                <input type="text" id="floor-hex" class="hex-input" value="#8B4513" placeholder="#8B4513" pattern="^#[0-9A-Fa-f]{6}$" aria-label="Floor color hex value">
+                                <div class="color-preview" id="floor-preview" style="background-color: #8B4513"></div>
+                            </div>
+                            <div class="color-help">Flooring or carpet color</div>
+                        </div>
+
+                        <!-- Furniture Color -->
+                        <div class="color-picker-group">
+                            <label for="furniture-color" class="color-label">
+                                <span class="color-label-text">Furniture Color</span>
+                                <span class="color-label-optional">(Optional)</span>
+                            </label>
+                            <div class="color-input-wrapper">
+                                <input type="color" id="furniture-color" name="furniture" class="color-input" value="#A0522D">
+                                <input type="text" id="furniture-hex" class="hex-input" value="#A0522D" placeholder="#A0522D" pattern="^#[0-9A-Fa-f]{6}$" aria-label="Furniture color hex value">
+                                <div class="color-preview" id="furniture-preview" style="background-color: #A0522D"></div>
+                            </div>
+                            <div class="color-help">Main furniture pieces</div>
+                        </div>
+
+                        <!-- Accent Color -->
+                        <div class="color-picker-group">
+                            <label for="accent-color" class="color-label">
+                                <span class="color-label-text">Accent Color</span>
+                                <span class="color-label-optional">(Optional)</span>
+                            </label>
+                            <div class="color-input-wrapper">
+                                <input type="color" id="accent-color" name="accent" class="color-input" value="#FF6347">
+                                <input type="text" id="accent-hex" class="hex-input" value="#FF6347" placeholder="#FF6347" pattern="^#[0-9A-Fa-f]{6}$" aria-label="Accent color hex value">
+                                <div class="color-preview" id="accent-preview" style="background-color: #FF6347"></div>
+                            </div>
+                            <div class="color-help">Decorative elements, pillows, art</div>
+                        </div>
+
+                    </div>
+
+                    <!-- Room Preview -->
+                    <div class="room-preview" id="room-preview" aria-label="Real-time color preview">
+                        <div class="preview-room">
+                            <div class="preview-wall" id="preview-wall"></div>
+                            <div class="preview-floor" id="preview-floor"></div>
+                            <div class="preview-furniture" id="preview-furniture"></div>
+                            <div class="preview-accent" id="preview-accent"></div>
+                        </div>
+                        <p class="preview-label">Live Preview</p>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="reset-btn" aria-label="Reset all colors to defaults">
+                            <span class="btn-icon">🔄</span>
+                            <span>Reset Colors</span>
+                        </button>
+                        <button type="submit" class="btn btn-primary" id="analyze-btn">
+                            <span class="btn-icon">✨</span>
+                            <span>Analyze Colors</span>
+                            <div class="btn-loading" aria-hidden="true">
+                                <div class="btn-spinner"></div>
+                            </div>
+                        </button>
+                    </div>
+
+                </form>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section" id="results-section" aria-labelledby="results-title" style="display: none;">
+                <h3 id="results-title" class="section-title">Color Recommendations</h3>
+
+                <div class="results-container" id="results-container" role="region" aria-live="polite">
+                    <!-- Results will be dynamically inserted here -->
+                </div>
+
+                <!-- Results Actions -->
+                <div class="results-actions" style="display: none;" id="results-actions">
+                    <button type="button" class="btn btn-outline" id="export-btn" aria-label="Export color recommendations">
+                        <span class="btn-icon">📁</span>
+                        <span>Export Results</span>
+                    </button>
+                    <button type="button" class="btn btn-outline" id="share-btn" aria-label="Share color recommendations">
+                        <span class="btn-icon">🔗</span>
+                        <span>Share</span>
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="new-analysis-btn" aria-label="Start new color analysis">
+                        <span class="btn-icon">🆕</span>
+                        <span>New Analysis</span>
+                    </button>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <p class="footer-text">
+                        Based on <strong>Sanzo Wada's Dictionary of Color Combinations</strong> (1918)
+                    </p>
+                    <p class="footer-credits">
+                        AI-powered analysis with modern color science - Demo Version
+                    </p>
+                </div>
+                <div class="footer-links">
+                    <a href="#" class="footer-link" id="privacy-link">Privacy</a>
+                    <a href="#" class="footer-link" id="terms-link">Terms</a>
+                    <a href="https://github.com/mattdesl/dictionary-of-colour-combinations" class="footer-link" target="_blank" rel="noopener">Source Data</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals (same as main index.html) -->
+    <div class="modal" id="about-modal" role="dialog" aria-labelledby="about-modal-title" aria-hidden="true">
+        <div class="modal-backdrop" aria-hidden="true"></div>
+        <div class="modal-content">
+            <header class="modal-header">
+                <h2 id="about-modal-title" class="modal-title">About Sanzo Wada</h2>
+                <button class="modal-close" aria-label="Close about dialog">&times;</button>
+            </header>
+            <div class="modal-body">
+                <p>
+                    Sanzo Wada (1883-1967) was a Japanese artist and educator who created one of the most influential
+                    color theory books in design history. His "Dictionary of Color Combinations" (1918) presents
+                    348 color combinations across six different themes.
+                </p>
+                <p>
+                    Our AI system analyzes your space using Wada's timeless principles, combined with modern
+                    color science and psychological research, to suggest harmonious color combinations that
+                    create the perfect atmosphere for any room.
+                </p>
+                <h3>Key Features:</h3>
+                <ul>
+                    <li>Based on authentic Sanzo Wada color combinations</li>
+                    <li>Room-specific psychological color analysis</li>
+                    <li>Age-appropriate recommendations</li>
+                    <li>Real-time color preview</li>
+                    <li>Accessibility-compliant design</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="help-modal" role="dialog" aria-labelledby="help-modal-title" aria-hidden="true">
+        <div class="modal-backdrop" aria-hidden="true"></div>
+        <div class="modal-content">
+            <header class="modal-header">
+                <h2 id="help-modal-title" class="modal-title">How to Use - Demo</h2>
+                <button class="modal-close" aria-label="Close help dialog">&times;</button>
+            </header>
+            <div class="modal-body">
+                <h3>Demo Features:</h3>
+                <ul>
+                    <li><strong>Fill Demo Data:</strong> Automatically fills the form with example data</li>
+                    <li><strong>Random Colors:</strong> Generates random harmonic color combinations</li>
+                    <li><strong>Test API:</strong> Checks if the backend API is running</li>
+                    <li><strong>Show Mock Result:</strong> Displays example results without API call</li>
+                </ul>
+
+                <h3>Using the Interface:</h3>
+                <p>Select room type, choose colors using the color pickers or hex inputs, and click "Analyze Colors" to get recommendations.</p>
+
+                <h3>Note:</h3>
+                <p>This is a frontend demo. The full experience requires the backend API to be running on localhost:3000.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toasts -->
+    <div class="toast" id="error-toast" role="alert" aria-live="assertive" aria-hidden="true">
+        <div class="toast-content">
+            <span class="toast-icon">⚠️</span>
+            <span class="toast-message" id="error-message">An error occurred</span>
+            <button class="toast-close" aria-label="Close error message">&times;</button>
+        </div>
+    </div>
+
+    <div class="toast toast-success" id="success-toast" role="alert" aria-live="polite" aria-hidden="true">
+        <div class="toast-content">
+            <span class="toast-icon">✅</span>
+            <span class="toast-message" id="success-message">Success!</span>
+            <button class="toast-close" aria-label="Close success message">&times;</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/ApiClient.js" defer></script>
+    <script src="js/ColorPicker.js" defer></script>
+    <script src="js/ResultDisplay.js" defer></script>
+    <script src="js/App.js" defer></script>
+
+    <!-- Demo Script -->
+    <script defer>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Wait for app to initialize
+            setTimeout(() => {
+                if (window.sanzoApp) {
+                    setupDemoFeatures();
+                    checkApiStatus();
+                }
+            }, 1000);
+        });
+
+        function setupDemoFeatures() {
+            // Fill demo data
+            document.getElementById('demo-fill-form').addEventListener('click', () => {
+                document.getElementById('room-type').value = 'living_room';
+                document.getElementById('room-type').dispatchEvent(new Event('change'));
+
+                const colors = {
+                    wall: '#F8F6F0',
+                    floor: '#8B7355',
+                    furniture: '#654321',
+                    accent: '#D2B48C'
+                };
+
+                if (window.sanzoApp.components.colorPicker) {
+                    window.sanzoApp.components.colorPicker.setColors(colors);
+                }
+            });
+
+            // Random colors
+            document.getElementById('demo-random-colors').addEventListener('click', () => {
+                if (window.sanzoApp.components.colorPicker) {
+                    window.sanzoApp.components.colorPicker.generateRandomPalette();
+                }
+            });
+
+            // Test API
+            document.getElementById('demo-test-api').addEventListener('click', async () => {
+                await checkApiStatus();
+            });
+
+            // Mock result
+            document.getElementById('demo-mock-result').addEventListener('click', () => {
+                showMockResult();
+            });
+        }
+
+        async function checkApiStatus() {
+            const indicator = document.getElementById('api-indicator');
+            const statusText = document.getElementById('api-status-text');
+
+            indicator.className = 'api-status-indicator checking';
+            statusText.textContent = 'Checking connection...';
+
+            if (window.sanzoApp && window.sanzoApp.components.apiClient) {
+                const result = await window.sanzoApp.components.apiClient.healthCheck();
+
+                if (result.success) {
+                    indicator.className = 'api-status-indicator connected';
+                    statusText.textContent = 'Connected - API is running';
+                } else {
+                    indicator.className = 'api-status-indicator disconnected';
+                    statusText.textContent = 'Disconnected - API not available (demo mode only)';
+                }
+            } else {
+                indicator.className = 'api-status-indicator disconnected';
+                statusText.textContent = 'App not initialized';
+            }
+        }
+
+        function showMockResult() {
+            const mockResult = {
+                success: true,
+                data: {
+                    recommendations: [
+                        {
+                            id: "sanzo_wada_warm_harmony",
+                            name: "Wada Warm Harmony",
+                            type: "sanzo_harmony",
+                            confidence: 92,
+                            colors: {
+                                accent: {
+                                    hex: "#D2B48C",
+                                    rgb: { r: 210, g: 180, b: 140 },
+                                    hsl: { h: 40, s: 44, l: 69 }
+                                },
+                                complement: {
+                                    hex: "#8B7355",
+                                    rgb: { r: 139, g: 115, b: 85 },
+                                    hsl: { h: 33, s: 24, l: 44 }
+                                }
+                            },
+                            reasoning: "This combination follows Sanzo Wada's warm earth tone principles, creating a comfortable and inviting atmosphere perfect for living spaces. The colors work harmoniously to promote relaxation and social interaction.",
+                            psychologicalEffects: "Warmth, comfort, stability, earthiness",
+                            suitabilityScore: 88,
+                            implementationTips: [
+                                "Use lighter tones on larger surfaces to avoid overwhelming the space",
+                                "Incorporate natural textures like wood and linen to enhance the earthy feeling",
+                                "Add plants to complement the natural color palette",
+                                "Consider warm lighting to enhance the cozy atmosphere"
+                            ]
+                        }
+                    ],
+                    analysis: {
+                        roomRequirements: {
+                            lighting: "Natural and warm artificial lighting",
+                            mood: "Relaxing and social",
+                            activity: "Relaxation and entertainment"
+                        }
+                    }
+                }
+            };
+
+            if (window.sanzoApp && window.sanzoApp.components.resultDisplay) {
+                window.sanzoApp.components.resultDisplay.displayResults(mockResult);
+                document.getElementById('results-section').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
+
+</body>
+</html>

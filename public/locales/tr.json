@@ -1,0 +1,439 @@
+{
+  "app": {
+    "title": "Sanzo Renk Danışmanı",
+    "subtitle": "Yapay Zeka Destekli İç Mekan Tasarımı",
+    "pageTitle": "Sanzo Renk Danışmanı - Yapay Zeka Destekli İç Mekan Renk Tasarımı",
+    "metaDescription": "Sanzo Wada'nın zamansız renk teorisine dayalı olarak eviniz için mükemmel renk kombinasyonlarını keşfedin",
+    "loading": "Sanzo Renk Danışmanı yükleniyor..."
+  },
+  "navigation": {
+    "skipToMain": "Ana içeriğe geç",
+    "skipToForm": "Renk formuna geç",
+    "skipToResults": "Sonuçlara geç",
+    "skipToFooter": "Altbilgiye geç",
+    "accessibility": "Erişilebilirlik",
+    "about": "Hakkında",
+    "help": "Yardım",
+    "language": "Dil"
+  },
+  "hero": {
+    "title": "Mükemmel Renk Kombinasyonlarını Keşfedin",
+    "subtitle": "Sanzo Wada'nın 1918 tarihli zamansız Renk Kombinasyonları Sözlüğü'ne dayalı olarak, yapay zekamiz mekanınızı analiz ederek mükemmel atmosfer yaratan uyumlu renkler önerir."
+  },
+  "form": {
+    "title": "Mekanınızı Tasarlayın",
+    "roomType": {
+      "label": "Oda Türü",
+      "required": "Gerekli",
+      "help": "Tasarladığınız odanın türünü seçin",
+      "placeholder": "Oda türü seçin",
+      "options": {
+        "living_room": "Oturma Odası",
+        "bedroom": "Yatak Odası",
+        "child_bedroom": "Çocuk Odası",
+        "study": "Çalışma Odası/Ofis",
+        "dining_room": "Yemek Odası",
+        "bathroom": "Banyo",
+        "playroom": "Oyun Odası"
+      }
+    },
+    "ageGroup": {
+      "label": "Yaş Grubu",
+      "help": "Psikolojik renk önerileri için yaş grubu",
+      "placeholder": "Yaş grubu seçin",
+      "options": {
+        "0-3": "0-3 yaş (Bebek)",
+        "4-6": "4-6 yaş (Okul öncesi)",
+        "7-12": "7-12 yaş (Okul çağı)",
+        "13-18": "13-18 yaş (Genç)",
+        "adult": "Yetişkin",
+        "elderly": "Yaşlı"
+      }
+    },
+    "colors": {
+      "wall": {
+        "label": "Duvar Rengi",
+        "optional": "(İsteğe bağlı)",
+        "help": "Mevcut veya istenen duvar rengi",
+        "ariaLabel": "Duvar rengi seçin",
+        "hexLabel": "Duvar rengi hex değeri",
+        "preview": "Duvar rengi önizlemesi"
+      },
+      "floor": {
+        "label": "Zemin Rengi",
+        "optional": "(İsteğe bağlı)",
+        "help": "Döşeme veya halı rengi",
+        "ariaLabel": "Zemin rengi seçin",
+        "hexLabel": "Zemin rengi hex değeri",
+        "preview": "Zemin rengi önizlemesi"
+      },
+      "furniture": {
+        "label": "Mobilya Rengi",
+        "optional": "(İsteğe bağlı)",
+        "help": "Ana mobilya parçaları",
+        "ariaLabel": "Mobilya rengi seçin",
+        "hexLabel": "Mobilya rengi hex değeri",
+        "preview": "Mobilya rengi önizlemesi"
+      },
+      "accent": {
+        "label": "Vurgu Rengi",
+        "optional": "(İsteğe bağlı)",
+        "help": "Dekoratif öğeler, yastıklar, sanat eserleri",
+        "ariaLabel": "Vurgu rengi seçin",
+        "hexLabel": "Vurgu rengi hex değeri",
+        "preview": "Vurgu rengi önizlemesi"
+      },
+      "hexFormatHelp": "Rengi hex kodu olarak girin, örneğin kırmızı için #FF0000"
+    },
+    "preview": {
+      "title": "Canlı Önizleme",
+      "ariaLabel": "Gerçek zamanlı renk önizlemesi"
+    },
+    "actions": {
+      "reset": "Renkleri Sıfırla",
+      "resetAria": "Tüm renkleri varsayılana sıfırla",
+      "analyze": "Renkleri Analiz Et",
+      "analyzeAria": "Renk kombinasyonlarını analiz et",
+      "analyzing": "Analiz ediliyor..."
+    }
+  },
+  "results": {
+    "title": "Renk Önerileri",
+    "noResults": "Öneri mevcut değil",
+    "loadingResults": "Renk seçimleriniz analiz ediliyor...",
+    "confidence": "Güven Skoru",
+    "psychology": "Psikolojik Etkiler",
+    "suitability": "Oda Uygunluğu",
+    "implementation": "Uygulama İpuçları",
+    "colorHarmony": "Renk Uyumu",
+    "actions": {
+      "export": "Sonuçları Dışa Aktar",
+      "exportAria": "Renk önerilerini dışa aktar",
+      "share": "Paylaş",
+      "shareAria": "Renk önerilerini paylaş",
+      "newAnalysis": "Yeni Analiz",
+      "newAnalysisAria": "Yeni renk analizi başlat"
+    },
+    "recommendations": {
+      "primary": "Birincil Öneri",
+      "alternative": "Alternatif Seçenekler",
+      "similar": "Benzer Renkler"
+    }
+  },
+  "accessibility": {
+    "title": "Erişilebilirlik Seçenekleri",
+    "close": "Erişilebilirlik panelini kapat",
+    "groups": {
+      "visual": {
+        "title": "Görsel Tercihler",
+        "highContrast": {
+          "label": "Yüksek Kontrast Modu",
+          "description": "Daha iyi görünürlük için kontrastı artırır"
+        },
+        "largeText": {
+          "label": "Büyük Metin",
+          "description": "Daha iyi okunabilirlik için yazı boyutunu artırır"
+        },
+        "colorPatterns": {
+          "label": "Renk Desenlerini Göster",
+          "description": "Renkleri ayırt etmek için görsel desenler ekler"
+        }
+      },
+      "animation": {
+        "title": "Animasyon Tercihleri",
+        "reduceMotion": {
+          "label": "Hareketi Azalt",
+          "description": "Animasyonları ve geçişleri minimize eder"
+        }
+      },
+      "colorVision": {
+        "title": "Renk Görme Simülasyonu",
+        "description": "Renklerin farklı renk görme türleriyle nasıl göründüğünü test edin",
+        "options": {
+          "normal": "Normal Görüş",
+          "protanopia": "Protanopi (Kırmızı körlüğü)",
+          "deuteranopia": "Deuteranopi (Yeşil körlüğü)",
+          "tritanopia": "Tritanopi (Mavi körlüğü)",
+          "achromatopsia": "Akromatopsi (Tek renkli)"
+        }
+      },
+      "testing": {
+        "title": "Erişilebilirlik Testi",
+        "description": "WCAG uyumluluğunu kontrol etmek için otomatik erişilebilirlik testleri çalıştırın",
+        "runAudit": {
+          "label": "Erişilebilirlik Denetimi Çalıştır",
+          "description": "WCAG 2.1 AA uyumluluğunu kontrol et"
+        },
+        "testColors": {
+          "label": "Renk Kombinasyonlarını Test Et",
+          "description": "Mevcut renkleri erişilebilirlik açısından analiz et"
+        },
+        "validate": {
+          "label": "Uygulamayı Doğrula",
+          "description": "Erişilebilirlik özelliklerinin kapsamlı doğrulaması"
+        }
+      },
+      "keyboard": {
+        "title": "Klavye Kısayolları",
+        "shortcuts": {
+          "main": "Ana içeriğe geç",
+          "navigation": "Navigasyona geç",
+          "help": "Yardımı aç",
+          "accessibility": "Erişilebilirlik panelini aç",
+          "analyze": "Renkleri analiz et",
+          "reset": "Renkleri sıfırla",
+          "colorPicker": "Renk seçiciye odaklan",
+          "navigateForward": "İleri git",
+          "navigateBackward": "Geri git",
+          "navigateGrid": "Renk ızgarasında gezin",
+          "firstLast": "Satırda ilk/son",
+          "firstLastGrid": "Izgarada ilk/son",
+          "activate": "Öğeyi etkinleştir",
+          "copy": "Renk değerini kopyala",
+          "close": "Modal/paneli kapat"
+        }
+      }
+    },
+    "actions": {
+      "reset": "Varsayılana Sıfırla",
+      "save": "Tercihleri Kaydet"
+    }
+  },
+  "about": {
+    "title": "Sanzo Wada Hakkında",
+    "close": "Hakkında diyalogunu kapat",
+    "content": {
+      "intro": "Sanzo Wada (1883-1967), tasarım tarihinin en etkili renk teorisi kitaplarından birini yaratan Japon sanatçı ve eğitimciydi. 1918 tarihli \"Renk Kombinasyonları Sözlüğü\" altı farklı tema boyunca 348 renk kombinasyonu sunar.",
+      "system": "Yapay zeka sistemimiz, Wada'nın zamansız ilkelerini modern renk bilimi ve psikolojik araştırmalarla birleştirerek mekanınızı analiz eder ve herhangi bir oda için mükemmel atmosfer yaratan uyumlu renk kombinasyonları önerir.",
+      "features": "Temel Özellikler:",
+      "featuresList": [
+        "Otantik Sanzo Wada renk kombinasyonlarına dayalı",
+        "Odaya özel psikolojik renk analizi",
+        "Yaşa uygun öneriler",
+        "Gerçek zamanlı renk önizlemesi",
+        "Erişilebilirlik uyumlu tasarım"
+      ]
+    }
+  },
+  "help": {
+    "title": "Nasıl Kullanılır",
+    "close": "Yardım diyalogunu kapat",
+    "steps": {
+      "step1": {
+        "title": "Adım 1: Odanızı Seçin",
+        "description": "Tasarladığınız odanın türünü seçin. Her oda türünün kullanım amacına göre özel renk önerileri vardır."
+      },
+      "step2": {
+        "title": "Adım 2: Renkleri Seçin (İsteğe bağlı)",
+        "description": "Odanızda mevcut olan renkleri ekleyin. Renk seçiciyi kullanabilir veya hex değerlerini doğrudan girebilirsiniz. Tüm renkler isteğe bağlıdır."
+      },
+      "step3": {
+        "title": "Adım 3: Öneriler Alın",
+        "description": "Sanzo Wada'nın renk teorisine dayalı yapay zeka destekli öneriler almak için \"Renkleri Analiz Et\"e tıklayın."
+      }
+    },
+    "understanding": {
+      "title": "Sonuçları Anlama:",
+      "items": [
+        "Güven Skoru: Renklerin ne kadar iyi uyumlu olduğu (yüksek daha iyi)",
+        "Psikolojik Etkiler: Renklerin nasıl hissettireceği",
+        "Uygulama İpuçları: Renkleri kullanmak için pratik öneriler"
+      ]
+    },
+    "tips": {
+      "title": "En İyi Sonuçlar İçin İpuçları:",
+      "items": [
+        "Hedefli öneriler için oda türünü spesifik olarak belirtin",
+        "Çocuk odaları için yaş grubunu dahil edin",
+        "Seçenekleri keşfetmek için farklı kombinasyonlar deneyin",
+        "Önerileri uygularken aydınlatmayı göz önünde bulundurun"
+      ]
+    }
+  },
+  "colors": {
+    "names": {
+      "lightGray": "Açık gri",
+      "brown": "Kahverengi",
+      "darkBrown": "Koyu kahverengi",
+      "orangeRed": "Turuncu-kırmızı",
+      "white": "Beyaz",
+      "black": "Siyah",
+      "red": "Kırmızı",
+      "green": "Yeşil",
+      "blue": "Mavi",
+      "yellow": "Sarı",
+      "orange": "Turuncu",
+      "purple": "Mor",
+      "pink": "Pembe",
+      "cyan": "Camgöbeği",
+      "magenta": "Macenta",
+      "beige": "Bej",
+      "cream": "Krem",
+      "ivory": "Fildişi",
+      "tan": "Ten rengi",
+      "khaki": "Haki",
+      "olive": "Zeytin yeşili",
+      "navy": "Lacivert",
+      "teal": "Deniz mavisi",
+      "maroon": "Kestane rengi",
+      "silver": "Gümüş",
+      "gold": "Altın"
+    },
+    "traditional": {
+      "turkishRed": "Türk Kırmızısı",
+      "nazerBlue": "Nazar Mavisi",
+      "islamGreen": "İslam Yeşili",
+      "ottomanGold": "Osmanlı Altını",
+      "violetPurple": "Menekşe Moru",
+      "anatolianEarth": "Anadolu Toprağı",
+      "honeySaffron": "Ballık Sarı",
+      "aegeanSun": "Ege Güneşi",
+      "blackSeaGreen": "Karadeniz Yeşili",
+      "ceramicRed": "Çini Kırmızı",
+      "sultanPurple": "Sultanı Mor",
+      "dawnRed": "Şafak Kırmızısı",
+      "dateGreen": "Hurma Yeşili",
+      "tulipPurple": "Lale Moru",
+      "beachBeige": "Kumsal Bej",
+      "oliveOilGreen": "Zeytinyağı Yeşili"
+    },
+    "cultural": {
+      "patriotic": "Vatansever renkler",
+      "protective": "Koruyucu renkler",
+      "spiritual": "Manevi renkler",
+      "traditional": "Geleneksel renkler",
+      "natural": "Doğal renkler",
+      "festive": "Bayram renkleri",
+      "peaceful": "Huzur renkleri",
+      "energetic": "Enerjik renkler"
+    },
+    "sanzoHarmonies": {
+      "wadaClassicWarm": {
+        "name": "Wada Klasik Sıcak",
+        "psychology": "rahatlık, sıcaklık, geleneksel zarafet",
+        "cultural": "Türk misafirperverliği, ev sıcaklığı"
+      },
+      "wadaTranquilBlues": {
+        "name": "Wada Huzurlu Maviler",
+        "psychology": "sakinlik, huzur, zihinsel berraklık",
+        "cultural": "Nazar koruması, İstanbul'un mavi tonları"
+      },
+      "wadaEarthTones": {
+        "name": "Wada Toprak Tonları",
+        "psychology": "topraklanma, istikrar, doğal uyum",
+        "cultural": "Anadolu toprakları, köklerimiz"
+      },
+      "wadaGentleGreens": {
+        "name": "Wada Yumuşak Yeşiller",
+        "psychology": "büyüme, denge, yenilenme",
+        "cultural": "İslami huzur, doğal bereket"
+      },
+      "wadaSunsetWarmth": {
+        "name": "Wada Gün Batımı Sıcaklığı",
+        "psychology": "enerji, yaratıcılık, sosyal sıcaklık",
+        "cultural": "Akdeniz günbatımı, sosyal yaşam"
+      },
+      "contemporarySanzoNeutral": {
+        "name": "Çağdaş Sanzo Nötr",
+        "psychology": "minimalizm, berraklık, genişlik",
+        "cultural": "Modern Türk tasarımı, zarafet"
+      },
+      "sanzoChildWonder": {
+        "name": "Sanzo Çocuk Harikası",
+        "psychology": "neşe, yaratıcılık, öğrenme uyarımı",
+        "cultural": "Çocukluk sevinci, oyun kültürü"
+      },
+      "turkishTraditional": {
+        "name": "Türk Geleneksel Uyum",
+        "psychology": "vatan sevgisi, kültürel bağlılık, köklülük",
+        "cultural": "Osmanlı sanatı, geleneksel değerler"
+      },
+      "anatolianWarmth": {
+        "name": "Anadolu Sıcaklığı",
+        "psychology": "misafirperverlik, aile bağları, sıcaklık",
+        "cultural": "Anadolu misafirperverliği, ev kavramı"
+      },
+      "istanbulElegance": {
+        "name": "İstanbul Zarafeti",
+        "psychology": "sofistike, kültürel zenginlik, tarih",
+        "cultural": "İstanbul'un kozmopolit ruhu, tarih"
+      }
+    },
+    "recommendations": {
+      "culturalNote": "Kültürel öneri",
+      "traditionalColors": "Geleneksel renkler",
+      "culturalMeaning": "Kültürel anlam",
+      "regionalInfluence": "Bölgesel etki",
+      "spiritualSignificance": "Manevi önem",
+      "patrioticValue": "Vatansever değer"
+    }
+  },
+  "errors": {
+    "general": "Bir hata oluştu",
+    "networkError": "Ağ bağlantı hatası",
+    "validationError": "Lütfen girdinizi kontrol edin",
+    "apiError": "Sunucu hatası, lütfen tekrar deneyin",
+    "loadingError": "İçerik yüklenemedi",
+    "initializationError": "Uygulama başlatılamadı",
+    "unsupportedLanguage": "Desteklenmeyen dil",
+    "translationError": "Çeviri mevcut değil",
+    "retry": "Tekrar dene",
+    "cancel": "İptal",
+    "close": "Kapat"
+  },
+  "common": {
+    "loading": "Yükleniyor...",
+    "error": "Hata",
+    "success": "Başarılı",
+    "warning": "Uyarı",
+    "info": "Bilgi",
+    "yes": "Evet",
+    "no": "Hayır",
+    "ok": "Tamam",
+    "cancel": "İptal",
+    "save": "Kaydet",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "copy": "Kopyala",
+    "paste": "Yapıştır",
+    "cut": "Kes",
+    "undo": "Geri al",
+    "redo": "Yeniden yap",
+    "search": "Ara",
+    "filter": "Filtrele",
+    "sort": "Sırala",
+    "export": "Dışa aktar",
+    "import": "İçe aktar",
+    "print": "Yazdır",
+    "share": "Paylaş",
+    "download": "İndir",
+    "upload": "Yükle",
+    "next": "Sonraki",
+    "previous": "Önceki",
+    "first": "İlk",
+    "last": "Son",
+    "page": "Sayfa",
+    "of": "nın",
+    "items": "öğe",
+    "selected": "seçili",
+    "all": "Tümü",
+    "none": "Hiçbiri"
+  },
+  "footer": {
+    "basedOn": "Temel alınan",
+    "sanzoWadaBook": "Sanzo Wada'nın Renk Kombinasyonları Sözlüğü",
+    "year": "(1918)",
+    "aiPowered": "Modern renk bilimi ile yapay zeka destekli analiz",
+    "privacy": "Gizlilik",
+    "terms": "Şartlar",
+    "sourceData": "Kaynak Veri"
+  },
+  "toast": {
+    "error": "Bir hata oluştu",
+    "success": "Başarılı!",
+    "warning": "Uyarı",
+    "info": "Bilgi",
+    "closeError": "Hata mesajını kapat",
+    "closeSuccess": "Başarı mesajını kapat"
+  }
+}

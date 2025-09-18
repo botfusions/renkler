@@ -1,0 +1,57 @@
+# Docker Compose override for development environment
+# Use with: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+
+version: '3.8'
+
+services:
+  sanzo-app:
+    build:
+      target: builder  # Use builder stage for development
+    environment:
+      - NODE_ENV=development
+      - LOG_LEVEL=debug
+    volumes:
+      # Mount source code for hot reloading
+      - ./src:/app/src:ro
+      - ./public:/app/public:ro
+      - ./tests:/app/tests:ro
+      - ./package.json:/app/package.json:ro
+      - sanzo-dev-cache:/tmp/sanzo-cache
+    command: ["npm", "run", "dev"]  # Use development command
+    ports:
+      - "3000:3000"
+      - "9229:9229"  # Debug port
+    stdin_open: true
+    tty: true
+
+  # Development database (SQLite for simplicity)
+  dev-db:
+    image: alpine:latest
+    container_name: sanzo-dev-db
+    volumes:
+      - sanzo-dev-db:/data
+    command: ["tail", "-f", "/dev/null"]  # Keep container running
+    networks:
+      - sanzo-network
+
+  # Development tools container
+  dev-tools:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder
+    container_name: sanzo-dev-tools
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: ["tail", "-f", "/dev/null"]
+    networks:
+      - sanzo-network
+    profiles:
+      - tools
+
+volumes:
+  sanzo-dev-cache:
+    driver: local
+  sanzo-dev-db:
+    driver: local

@@ -18,7 +18,13 @@
     "health": "curl -s http://localhost:3000/api/health | json_pp",
     "docs": "curl -s http://localhost:3000/api/docs | json_pp",
     "metrics": "curl -s http://localhost:3000/metrics",
-    "analytics": "curl -s http://localhost:3000/api/analytics/dashboard | json_pp"
+    "analytics": "curl -s http://localhost:3000/api/analytics/dashboard | json_pp",
+    "supabase:start": "supabase start",
+    "supabase:stop": "supabase stop",
+    "supabase:reset": "supabase db reset",
+    "supabase:migrate": "supabase db push",
+    "create-admin": "node scripts/create-admin.js",
+    "seed-data": "supabase db seed"
   },
   "keywords": [
     "sanzo-wada",
@@ -45,7 +51,12 @@
     "winston": "^3.11.0",
     "winston-daily-rotate-file": "^4.7.1",
     "response-time": "^2.3.2",
-    "express-prometheus-middleware": "^1.2.0"
+    "express-prometheus-middleware": "^1.2.0",
+    "@supabase/supabase-js": "^2.39.0",
+    "cookie-parser": "^1.4.6",
+    "multer": "^1.4.5",
+    "sharp": "^0.33.0",
+    "joi": "^17.11.0"
   },
   "devDependencies": {
     "jest": "^29.7.0",

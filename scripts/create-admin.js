@@ -12,6 +12,9 @@ dotenv.config();
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL || process.env.VITE_SUPABASE_URL;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY;
 
+// Multi-schema configuration
+const tablePrefix = process.env.SUPABASE_TABLE_PREFIX || 'sanzo_';
+
 if (!supabaseUrl || !supabaseServiceKey) {
   console.error('❌ Missing required environment variables:');
   console.error('   - REACT_APP_SUPABASE_URL or VITE_SUPABASE_URL');
@@ -57,7 +60,7 @@ async function createAdminUser() {
 
       // Update admin profile
       const { error: profileError } = await supabase
-        .from('profiles')
+        .from(`${tablePrefix}profiles`)
         .upsert({
           id: adminData.user.id,
           email: adminEmail,
@@ -101,7 +104,7 @@ async function createAdminUser() {
 
       // Update test user profile
       const { error: testProfileError } = await supabase
-        .from('profiles')
+        .from(`${tablePrefix}profiles`)
         .upsert({
           id: testData.user.id,
           email: testEmail,

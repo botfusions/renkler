@@ -9,6 +9,10 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'http://localhost:54321';
 const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || 'your-anon-key-here';
 
+// Multi-schema configuration for self-hosted Supabase
+const supabaseSchema = process.env.SUPABASE_SCHEMA || 'sanzo_color_advisor';
+const tablePrefix = process.env.SUPABASE_TABLE_PREFIX || 'sanzo_';
+
 // Create Supabase client
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
@@ -21,6 +25,9 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
       removeItem: () => {}
     }
   },
+  db: {
+    schema: supabaseSchema
+  },
   global: {
     headers: {
       'X-Client-Info': 'sanzo-color-advisor@1.0.0'
@@ -28,13 +35,18 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   }
 });
 
+// Helper function to get table name with prefix
+function getTableName(baseName) {
+  return `${tablePrefix}${baseName}`;
+}
+
 // Database helper functions
 export const db = {
   // Profile operations
   profiles: {
     async get(userId) {
       const { data, error } = await supabase
-        .from('profiles')
+        .from(getTableName('profiles'))
         .select('*')
         .eq('id', userId)
         .single();
@@ -45,7 +57,7 @@ export const db = {
 
     async upsert(profile) {
       const { data, error } = await supabase
-        .from('profiles')
+        .from(getTableName('profiles'))
         .upsert(profile, {
           onConflict: 'id',
           returning: 'representation'
@@ -59,7 +71,7 @@ export const db = {
 
     async update(userId, updates) {
       const { data, error } = await supabase
-        .from('profiles')
+        .from(getTableName('profiles'))
         .update(updates)
         .eq('id', userId)
         .select()
@@ -74,7 +86,7 @@ export const db = {
   colorAnalyses: {
     async create(analysis) {
       const { data, error } = await supabase
-        .from('color_analyses')
+        .from(getTableName('color_analyses'))
         .insert(analysis)
         .select()
         .single();
@@ -85,10 +97,10 @@ export const db = {
 
     async getByUser(userId, limit = 20, offset = 0) {
       const { data, error } = await supabase
-        .from('color_analyses')
+        .from(getTableName('color_analyses'))
         .select(`
           *,
-          room_photos (
+          ${getTableName('room_photos')} (
             id,
             file_name,
             storage_path,
@@ -106,10 +118,10 @@ export const db = {
 
     async getById(analysisId) {
       const { data, error } = await supabase
-        .from('color_analyses')
+        .from(getTableName('color_analyses'))
         .select(`
           *,
-          room_photos (*)
+          ${getTableName('room_photos')} (*)
         `)
         .eq('id', analysisId)
         .single();
@@ -120,7 +132,7 @@ export const db = {
 
     async update(analysisId, updates) {
       const { data, error } = await supabase
-        .from('color_analyses')
+        .from(getTableName('color_analyses'))
         .update(updates)
         .eq('id', analysisId)
         .select()
@@ -132,7 +144,7 @@ export const db = {
 
     async delete(analysisId) {
       const { error } = await supabase
-        .from('color_analyses')
+        .from(getTableName('color_analyses'))
         .delete()
         .eq('id', analysisId);
 

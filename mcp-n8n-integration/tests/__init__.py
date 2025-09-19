@@ -1,0 +1,1 @@
+# Test package for Sanzo N8N MCP integration

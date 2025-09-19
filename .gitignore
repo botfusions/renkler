@@ -111,3 +111,63 @@ sessionStorage/
 # Performance monitoring
 performance-*.json
 lighthouse-*.json
+
+# N8N Workflow System
+# Keep workflow definitions but ignore runtime data
+workflows/runtime/
+workflows/temp/
+workflows/logs/
+*.workflow.backup
+
+# MCP Integration
+mcp-n8n-integration/logs/
+mcp-n8n-integration/temp/
+mcp-n8n-integration/cache/
+mcp-n8n-integration/.env
+
+# Photo Analysis
+uploads/
+room-photos/
+temp-images/
+analysis-cache/
+
+# Test servers and development files
+test-server.js
+photo-test-server.js
+n8n-webhook-server.js
+test-image.html
+test-workflows.js
+
+# API Keys and secrets
+*.key
+*.secret
+auth-tokens/
+
+# Webhook and automation data
+webhook-data/
+automation-logs/
+
+# Image processing temporary files
+sharp-cache/
+image-processing-temp/
+
+# Development documentation (keep deployment docs)
+CUSTOMER_UI_SUMMARY.md
+PHOTO_ANALYSIS_SUMMARY.md
+N8N_WORKFLOW_AUTOMATION_SUMMARY.md
+
+# Python virtual environments (for MCP integration)
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+.python-version
+
+# Jupyter Notebooks checkpoints
+.ipynb_checkpoints/
+
+# Editor specific
+.vscode/
+!.vscode/settings.json.example
+!.vscode/extensions.json

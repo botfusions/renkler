@@ -1,0 +1,321 @@
+{
+  "name": "Customer Analysis & Email Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "/api/customer-analysis-trigger",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Customer Analysis Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300],
+      "webhookId": "customer-analysis-webhook"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.analysisType}}",
+              "operation": "equal",
+              "value2": "photo"
+            }
+          ]
+        }
+      },
+      "id": "photo-analysis-check",
+      "name": "Photo Analysis Check",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "url": "={{$json.photoAnalysisUrl || 'http://localhost:3002/api/photo/analyze'}}",
+        "options": {
+          "bodyContentType": "multipart-form-data",
+          "redirect": {
+            "redirect": {}
+          }
+        },
+        "sendBody": true,
+        "bodyContentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "photo",
+              "value": "={{$json.photoFile}}"
+            },
+            {
+              "name": "roomType",
+              "value": "={{$json.roomType}}"
+            },
+            {
+              "name": "ageGroup",
+              "value": "={{$json.ageGroup}}"
+            }
+          ]
+        }
+      },
+      "id": "photo-analysis-api",
+      "name": "Photo Analysis API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [680, 180]
+    },
+    {
+      "parameters": {
+        "url": "={{$json.manualAnalysisUrl || 'http://localhost:3002/api/customer/analyze'}}",
+        "options": {
+          "bodyContentType": "json"
+        },
+        "sendBody": true,
+        "bodyContentType": "json",
+        "jsonParameters": "={{JSON.stringify({\n  roomType: $json.roomType,\n  ageGroup: $json.ageGroup,\n  wallColor: $json.wallColor,\n  floorColor: $json.floorColor,\n  customerPreferences: $json.customerPreferences\n})}}"
+      },
+      "id": "manual-analysis-api",
+      "name": "Manual Analysis API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [680, 420]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll"
+      },
+      "id": "merge-results",
+      "name": "Merge Analysis Results",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Process analysis results and prepare email data\nconst analysisData = items[0].json;\nconst customerData = items[0].json;\n\n// Extract color recommendations\nconst recommendations = analysisData.recommendations || [];\nconst extractedColors = analysisData.extractedColors || [];\n\n// Prepare personalized email content\nconst emailData = {\n  customerName: customerData.customerName || 'Değerli Müşterimiz',\n  customerEmail: customerData.customerEmail || '',\n  roomType: customerData.roomType || 'living_room',\n  ageGroup: customerData.ageGroup || 'adult',\n  analysisType: customerData.analysisType || 'manual',\n  \n  // Analysis results\n  topRecommendation: recommendations[0] || null,\n  allRecommendations: recommendations,\n  extractedColors: extractedColors,\n  \n  // Email content variables\n  roomTypeText: {\n    'living_room': 'Oturma Odası',\n    'bedroom': 'Yatak Odası', \n    'child_bedroom': 'Çocuk Odası',\n    'study': 'Çalışma Odası',\n    'dining_room': 'Yemek Odası',\n    'bathroom': 'Banyo',\n    'playroom': 'Oyun Odası'\n  }[customerData.roomType] || 'Odanız',\n  \n  ageGroupText: {\n    '0-3': '0-3 Yaş',\n    '4-6': '4-6 Yaş', \n    '7-12': '7-12 Yaş',\n    '13-18': '13-18 Yaş',\n    'adult': 'Yetişkin'\n  }[customerData.ageGroup] || '',\n  \n  analysisDate: new Date().toLocaleDateString('tr-TR'),\n  \n  // Generate personalized insights\n  personalizedInsight: recommendations.length > 0 ? \n    `${recommendations[0].description} Bu palet, ${customerData.roomType} için özel olarak seçildi.` :\n    'Renk analiziniz tamamlandı ve size özel öneriler hazırlandı.',\n    \n  // CRM data\n  leadScore: calculateLeadScore(customerData, recommendations),\n  followUpAction: determineFollowUpAction(recommendations),\n  \n  // Workflow metadata\n  workflowId: 'customer-analysis-' + Date.now(),\n  processedAt: new Date().toISOString()\n};\n\nfunction calculateLeadScore(customer, recs) {\n  let score = 50; // Base score\n  \n  // Analysis type bonus\n  if (customer.analysisType === 'photo') score += 20;\n  \n  // Room type priority\n  const highValueRooms = ['living_room', 'bedroom'];\n  if (highValueRooms.includes(customer.roomType)) score += 15;\n  \n  // Recommendations quality\n  if (recs.length > 0 && recs[0].confidence > 85) score += 15;\n  \n  return Math.min(score, 100);\n}\n\nfunction determineFollowUpAction(recs) {\n  if (!recs || recs.length === 0) return 'basic_followup';\n  \n  const topConfidence = recs[0].confidence || 0;\n  \n  if (topConfidence > 90) return 'premium_consultation';\n  if (topConfidence > 75) return 'detailed_proposal';\n  return 'additional_analysis';\n}\n\nreturn [{ json: emailData }];"
+      },
+      "id": "process-results",
+      "name": "Process Analysis Results",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1120, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.customerEmail}}",
+              "operation": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "id": "email-check",
+      "name": "Email Available Check",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [1340, 300]
+    },
+    {
+      "parameters": {
+        "authentication": "generic",
+        "genericAuthType": "httpBasicAuth",
+        "url": "={{$json.emailServiceUrl || 'https://api.emailjs.com/api/v1.0/email/send'}}",
+        "sendBody": true,
+        "bodyContentType": "json",
+        "jsonParameters": "={{JSON.stringify({\n  service_id: 'sanzo_color_service',\n  template_id: 'customer_analysis_template',\n  user_id: 'sanzo_color_user',\n  template_params: {\n    to_email: $json.customerEmail,\n    to_name: $json.customerName,\n    room_type: $json.roomTypeText,\n    age_group: $json.ageGroupText,\n    analysis_type: $json.analysisType,\n    top_recommendation: $json.topRecommendation?.name || 'Özel Renk Paleti',\n    recommendation_description: $json.topRecommendation?.description || $json.personalizedInsight,\n    analysis_date: $json.analysisDate,\n    follow_up_action: $json.followUpAction\n  }\n})}}"
+      },
+      "id": "send-analysis-email",
+      "name": "Send Analysis Email",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1560, 180]
+    },
+    {
+      "parameters": {
+        "url": "={{$json.crmWebhookUrl || 'https://webhook.site/your-crm-webhook'}}",
+        "sendBody": true,
+        "bodyContentType": "json",
+        "jsonParameters": "={{JSON.stringify({\n  customer: {\n    name: $json.customerName,\n    email: $json.customerEmail,\n    phone: $json.customerPhone || '',\n    source: 'sanzo_color_advisor'\n  },\n  lead: {\n    score: $json.leadScore,\n    room_type: $json.roomType,\n    age_group: $json.ageGroup,\n    analysis_type: $json.analysisType,\n    follow_up_action: $json.followUpAction,\n    created_at: $json.processedAt\n  },\n  analysis: {\n    recommendations_count: $json.allRecommendations?.length || 0,\n    top_confidence: $json.topRecommendation?.confidence || 0,\n    extracted_colors_count: $json.extractedColors?.length || 0\n  },\n  workflow: {\n    id: $json.workflowId,\n    processed_at: $json.processedAt\n  }\n})}}"
+      },
+      "id": "crm-integration",
+      "name": "CRM Integration",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1560, 420]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{JSON.stringify({\n  success: true,\n  message: 'Analiz tamamlandı ve e-posta gönderildi',\n  workflowId: $json.workflowId,\n  emailSent: true,\n  crmUpdated: true,\n  followUpAction: $json.followUpAction\n})}}"
+      },
+      "id": "success-response",
+      "name": "Success Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1780, 180]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{JSON.stringify({\n  success: true,\n  message: 'Analiz tamamlandı, CRM güncellendi',\n  workflowId: $json.workflowId,\n  emailSent: false,\n  crmUpdated: true,\n  reason: 'E-posta adresi sağlanmadı'\n})}}"
+      },
+      "id": "no-email-response",
+      "name": "No Email Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1780, 420]
+    }
+  ],
+  "connections": {
+    "Customer Analysis Trigger": {
+      "main": [
+        [
+          {
+            "node": "Photo Analysis Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Photo Analysis Check": {
+      "main": [
+        [
+          {
+            "node": "Photo Analysis API",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Manual Analysis API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Photo Analysis API": {
+      "main": [
+        [
+          {
+            "node": "Merge Analysis Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manual Analysis API": {
+      "main": [
+        [
+          {
+            "node": "Merge Analysis Results",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge Analysis Results": {
+      "main": [
+        [
+          {
+            "node": "Process Analysis Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Analysis Results": {
+      "main": [
+        [
+          {
+            "node": "Email Available Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email Available Check": {
+      "main": [
+        [
+          {
+            "node": "Send Analysis Email",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "CRM Integration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Analysis Email": {
+      "main": [
+        [
+          {
+            "node": "CRM Integration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CRM Integration": {
+      "main": [
+        [
+          {
+            "node": "Success Response",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "No Email Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-19T12:00:00.000Z",
+  "updatedAt": "2025-09-19T12:00:00.000Z",
+  "settings": {
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "id": "sanzo-color",
+      "name": "Sanzo Color"
+    },
+    {
+      "id": "customer-analysis",
+      "name": "Customer Analysis"
+    },
+    {
+      "id": "email-automation",
+      "name": "Email Automation"
+    }
+  ],
+  "meta": {
+    "description": "Müşteri renk analizi sonuçlarını işleyen ve otomatik e-posta gönderen N8N workflow'u. Photo ve manual analiz modlarını destekler, CRM entegrasyonu sağlar.",
+    "version": "1.0.0",
+    "author": "Sanzo Color Advisor System"
+  }
+}

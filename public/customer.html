@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Renk Danışmanı - Eviniz İçin Mükemmel Renkler</title>
+    <meta name="description" content="Yapay zeka destekli renk danışmanı ile evinizin her odası için en uygun renkleri keşfedin.">
+
+    <!-- Styles -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+
+        /* Quick Help */
+        .quick-help {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .help-steps {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .help-step {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .help-icon {
+            font-size: 1.5rem;
+        }
+
+        .help-text {
+            font-weight: 500;
+        }
+
+        /* Inline Help */
+        .inline-help {
+            background: #f8f9ff;
+            border: 1px solid #e1e8ff;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #4c63d2;
+            font-size: 0.9rem;
+        }
+
+        /* Analysis Methods */
+        .analysis-methods {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .method-card {
+            border: 2px solid #e1e1e1;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .method-card:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .method-card.active {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .method-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .method-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .method-desc {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Photo Upload */
+        .upload-area {
+            border: 3px dashed #d1d5db;
+            border-radius: 15px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #fafafa;
+        }
+
+        .upload-area:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .upload-area.dragover {
+            border-color: #667eea;
+            background: #f0f4ff;
+            transform: scale(1.02);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: #9ca3af;
+            margin-bottom: 15px;
+        }
+
+        .upload-main {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .upload-sub {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .upload-limit {
+            color: #9ca3af;
+            font-size: 0.85rem;
+        }
+
+        /* Uploaded Photo */
+        .uploaded-photo {
+            border: 2px solid #667eea;
+            border-radius: 15px;
+            padding: 20px;
+            background: #f8f9ff;
+        }
+
+        .uploaded-photo img {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .photo-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .photo-name {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .remove-photo {
+            background: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+
+        .remove-photo:hover {
+            background: #ff3742;
+        }
+
+        /* Main Card */
+        .main-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+            margin-bottom: 20px;
+        }
+
+        /* Step Indicator */
+        .steps {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            margin: 0 20px;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+
+        .step.active {
+            opacity: 1;
+        }
+
+        .step-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #667eea;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .step.active .step-number {
+            background: #764ba2;
+        }
+
+        /* Form Sections */
+        .form-section {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .section-subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        /* Room Selection */
+        .room-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .room-card {
+            border: 2px solid #e1e1e1;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .room-card:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .room-card.selected {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .room-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .room-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .room-desc {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Simple Color Picker */
+        .color-section {
+            margin-bottom: 30px;
+        }
+
+        .color-question {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .color-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .color-option {
+            aspect-ratio: 1;
+            border-radius: 10px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .color-option:hover {
+            transform: scale(1.05);
+            border-color: #667eea;
+        }
+
+        .color-option.selected {
+            border-color: #667eea;
+            transform: scale(1.1);
+        }
+
+        .color-option::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .color-option.selected::after {
+            opacity: 1;
+        }
+
+        .custom-color-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e1e1e1;
+        }
+
+        .custom-color-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .color-picker {
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .color-label {
+            font-weight: bold;
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f1f1f1;
+            color: #666;
+        }
+
+        .btn-secondary:hover {
+            background: #e1e1e1;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Results Section */
+        .results-section {
+            display: none;
+        }
+
+        .results-section.active {
+            display: block;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .result-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .result-card:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .result-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .color-palette {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .color-swatch {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: 2px solid #e1e1e1;
+        }
+
+        .result-description {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .confidence-score {
+            background: #f8f9ff;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        /* Extracted Colors */
+        .extracted-colors {
+            border: 2px solid #4ecdc4;
+            background: linear-gradient(135deg, #f8ffff 0%, #e8f8f8 100%);
+        }
+
+        .color-percentage {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            font-size: 0.7rem;
+            padding: 1px 3px;
+            border-radius: 3px;
+        }
+
+        .color-swatch {
+            position: relative;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            display: none;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .main-card {
+                padding: 20px;
+            }
+
+            .room-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .color-options {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Success Animations */
+        .success-animation {
+            text-align: center;
+            padding: 20px;
+            color: #28a745;
+        }
+
+        .check-icon {
+            font-size: 3rem;
+            animation: bounceIn 0.6s;
+        }
+
+        @keyframes bounceIn {
+            0%, 20%, 40%, 60%, 80% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">🎨 Renk Danışmanı</div>
+            <div class="tagline">Eviniz için mükemmel renkleri bulun</div>
+
+            <!-- Quick Help -->
+            <div class="quick-help">
+                <div class="help-steps">
+                    <div class="help-step">
+                        <span class="help-icon">🏠</span>
+                        <span class="help-text">Oda tipini seçin</span>
+                    </div>
+                    <div class="help-step">
+                        <span class="help-icon">🎨</span>
+                        <span class="help-text">Mevcut renklerinizi ekleyin</span>
+                    </div>
+                    <div class="help-step">
+                        <span class="help-icon">✨</span>
+                        <span class="help-text">AI önerilerini alın</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Card -->
+        <div class="main-card">
+            <!-- Step Indicator -->
+            <div class="steps">
+                <div class="step active" id="step-1">
+                    <div class="step-number">1</div>
+                    <div class="step-text">Oda Seçimi</div>
+                </div>
+                <div class="step" id="step-2">
+                    <div class="step-number">2</div>
+                    <div class="step-text">Fotoğraf/Renk</div>
+                </div>
+                <div class="step" id="step-3">
+                    <div class="step-number">3</div>
+                    <div class="step-text">Sonuçlar</div>
+                </div>
+            </div>
+
+            <!-- Step 1: Room Selection -->
+            <div class="form-section active" id="section-1">
+                <h2 class="section-title">Hangi odayı tasarlıyorsunuz?</h2>
+                <p class="section-subtitle">Oda tipini seçin, size özel renk önerileri hazırlayalım</p>
+
+                <div class="inline-help">
+                    <span class="help-icon">💡</span>
+                    <span class="help-text">Her oda tipi için farklı psikolojik renkler öneriyoruz</span>
+                </div>
+
+                <div class="room-grid">
+                    <div class="room-card" data-room="living_room">
+                        <div class="room-icon">🛋️</div>
+                        <div class="room-name">Oturma Odası</div>
+                        <div class="room-desc">Sosyal alan, rahat ve davetkar</div>
+                    </div>
+                    <div class="room-card" data-room="bedroom">
+                        <div class="room-icon">🛏️</div>
+                        <div class="room-name">Yatak Odası</div>
+                        <div class="room-desc">Dinlendirici ve huzurlu</div>
+                    </div>
+                    <div class="room-card" data-room="child_bedroom">
+                        <div class="room-icon">🧸</div>
+                        <div class="room-name">Çocuk Odası</div>
+                        <div class="room-desc">Eğlenceli ve yaratıcı</div>
+                    </div>
+                    <div class="room-card" data-room="study">
+                        <div class="room-icon">📚</div>
+                        <div class="room-name">Çalışma Odası</div>
+                        <div class="room-desc">Odaklanma ve verimlilik</div>
+                    </div>
+                    <div class="room-card" data-room="dining_room">
+                        <div class="room-icon">🍽️</div>
+                        <div class="room-name">Yemek Odası</div>
+                        <div class="room-desc">Sosyal ve iştah açıcı</div>
+                    </div>
+                    <div class="room-card" data-room="bathroom">
+                        <div class="room-icon">🛁</div>
+                        <div class="room-name">Banyo</div>
+                        <div class="room-desc">Temiz ve ferah</div>
+                    </div>
+                </div>
+
+                <!-- Age Group for Child's Room -->
+                <div class="age-group-section" id="age-group-section" style="display: none;">
+                    <h3 class="color-question">Çocuğunuzun yaş grubu nedir?</h3>
+                    <div class="room-grid">
+                        <div class="room-card age-card" data-age="0-3">
+                            <div class="room-icon">👶</div>
+                            <div class="room-name">0-3 Yaş</div>
+                            <div class="room-desc">Bebek/Küçük çocuk</div>
+                        </div>
+                        <div class="room-card age-card" data-age="4-6">
+                            <div class="room-icon">🧒</div>
+                            <div class="room-name">4-6 Yaş</div>
+                            <div class="room-desc">Okul öncesi</div>
+                        </div>
+                        <div class="room-card age-card" data-age="7-12">
+                            <div class="room-icon">👦</div>
+                            <div class="room-name">7-12 Yaş</div>
+                            <div class="room-desc">İlkokul çağı</div>
+                        </div>
+                        <div class="room-card age-card" data-age="13-18">
+                            <div class="room-icon">👨‍🎓</div>
+                            <div class="room-name">13-18 Yaş</div>
+                            <div class="room-desc">Genç/Ergen</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <div></div>
+                    <button class="btn btn-primary" id="next-step-1" disabled>
+                        Devam Et 👉
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Photo Upload or Color Selection -->
+            <div class="form-section" id="section-2">
+                <h2 class="section-title">Nasıl analiz yapmak istiyorsunuz?</h2>
+                <p class="section-subtitle">Fotoğraf yükleyin veya renkleri manuel seçin</p>
+
+                <!-- Analysis Method Selection -->
+                <div class="analysis-methods">
+                    <div class="method-card" id="photo-method">
+                        <div class="method-icon">📸</div>
+                        <div class="method-title">Fotoğraf Yükle</div>
+                        <div class="method-desc">Oda fotoğrafı yükleyin, AI otomatik analiz yapsın</div>
+                    </div>
+                    <div class="method-card active" id="color-method">
+                        <div class="method-icon">🎨</div>
+                        <div class="method-title">Manuel Renk Seçimi</div>
+                        <div class="method-desc">Bildiğiniz renkleri manuel olarak seçin</div>
+                    </div>
+                </div>
+
+                <!-- Photo Upload Section -->
+                <div class="photo-upload-section" id="photo-upload-section" style="display: none;">
+                    <div class="inline-help">
+                        <span class="help-icon">📸</span>
+                        <span class="help-text">Odanızın net bir fotoğrafını yükleyin (JPEG, PNG, WebP)</span>
+                    </div>
+
+                    <div class="upload-area" id="upload-area">
+                        <div class="upload-icon">📁</div>
+                        <div class="upload-text">
+                            <div class="upload-main">Fotoğraf yüklemek için tıklayın</div>
+                            <div class="upload-sub">veya dosyayı buraya sürükleyin</div>
+                            <div class="upload-limit">Max 10MB - JPEG, PNG, WebP</div>
+                        </div>
+                        <input type="file" id="photo-input" accept="image/jpeg,image/jpg,image/png,image/webp" style="display: none;">
+                    </div>
+
+                    <div class="uploaded-photo" id="uploaded-photo" style="display: none;">
+                        <img id="photo-preview" alt="Yüklenen fotoğraf">
+                        <div class="photo-info">
+                            <div class="photo-name" id="photo-name"></div>
+                            <button type="button" class="remove-photo" id="remove-photo">🗑️ Kaldır</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Manual Color Selection Section -->
+                <div class="color-selection-section" id="color-selection-section">
+                    <div class="inline-help">
+                        <span class="help-icon">🎨</span>
+                        <span class="help-text">Hiç renk seçmezseniz, sadece oda tipinize göre öneriler veririz</span>
+                    </div>
+
+                <!-- Wall Colors -->
+                <div class="color-section">
+                    <h3 class="color-question">🏠 Duvar renginiz var mı?</h3>
+                    <div class="color-options" id="wall-colors">
+                        <div class="color-option" style="background: #FFFFFF" data-color="#FFFFFF" title="Beyaz"></div>
+                        <div class="color-option" style="background: #F5F5F5" data-color="#F5F5F5" title="Açık Gri"></div>
+                        <div class="color-option" style="background: #E8E8E8" data-color="#E8E8E8" title="Gri"></div>
+                        <div class="color-option" style="background: #FFF8DC" data-color="#FFF8DC" title="Krem"></div>
+                        <div class="color-option" style="background: #F0E68C" data-color="#F0E68C" title="Açık Sarı"></div>
+                        <div class="color-option" style="background: #E0E0E0" data-color="#E0E0E0" title="Açık Mavi"></div>
+                        <div class="color-option" style="background: #F0FFF0" data-color="#F0FFF0" title="Açık Yeşil"></div>
+                        <div class="color-option" style="background: #FFE4E1" data-color="#FFE4E1" title="Açık Pembe"></div>
+                    </div>
+                    <div class="custom-color-section">
+                        <label class="color-label">Özel renk seçin:</label>
+                        <div class="custom-color-input">
+                            <input type="color" class="color-picker" id="wall-custom" value="#FFFFFF">
+                            <span>Duvar için özel renk</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Floor Colors -->
+                <div class="color-section">
+                    <h3 class="color-question">🪵 Zemin/halı renginiz var mı?</h3>
+                    <div class="color-options" id="floor-colors">
+                        <div class="color-option" style="background: #8B4513" data-color="#8B4513" title="Koyu Kahverengi"></div>
+                        <div class="color-option" style="background: #A0522D" data-color="#A0522D" title="Kahverengi"></div>
+                        <div class="color-option" style="background: #D2B48C" data-color="#D2B48C" title="Açık Kahverengi"></div>
+                        <div class="color-option" style="background: #F5DEB3" data-color="#F5DEB3" title="Bej"></div>
+                        <div class="color-option" style="background: #708090" data-color="#708090" title="Gri Parke"></div>
+                        <div class="color-option" style="background: #DCDCDC" data-color="#DCDCDC" title="Açık Gri"></div>
+                        <div class="color-option" style="background: #2F4F4F" data-color="#2F4F4F" title="Koyu Gri"></div>
+                        <div class="color-option" style="background: #800000" data-color="#800000" title="Bordo Halı"></div>
+                    </div>
+                    <div class="custom-color-section">
+                        <label class="color-label">Özel renk seçin:</label>
+                        <div class="custom-color-input">
+                            <input type="color" class="color-picker" id="floor-custom" value="#8B4513">
+                            <span>Zemin için özel renk</span>
+                        </div>
+                    </div>
+                </div>
+
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" id="back-step-2">
+                        👈 Geri
+                    </button>
+                    <button class="btn btn-primary" id="next-step-2">
+                        Analiz Et ✨
+                    </button>
+                </div>
+            </div>
+
+            <!-- Loading Section -->
+            <div class="loading" id="loading-section">
+                <div class="spinner"></div>
+                <h3>Yapay zeka renk önerilerinizi hazırlıyor...</h3>
+                <p>Bu birkaç saniye sürebilir</p>
+            </div>
+
+            <!-- Step 3: Results -->
+            <div class="form-section" id="section-3">
+                <div class="success-animation">
+                    <div class="check-icon">✅</div>
+                    <h2 class="section-title">Renk önerileriniz hazır!</h2>
+                    <p class="section-subtitle">Size özel hazırlanmış renk kombinasyonları</p>
+                </div>
+
+                <div class="results-grid" id="results-container">
+                    <!-- Results will be populated here -->
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" id="start-over">
+                        🔄 Yeni Analiz
+                    </button>
+                    <button class="btn btn-primary" id="save-results">
+                        💾 Sonuçları Kaydet
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Application state
+        let currentStep = 1;
+        let selectedRoom = '';
+        let selectedAge = '';
+        let selectedWallColor = '';
+        let selectedFloorColor = '';
+        let analysisMethod = 'color'; // 'color' or 'photo'
+        let uploadedPhoto = null;
+
+        // DOM elements
+        const steps = document.querySelectorAll('.step');
+        const sections = document.querySelectorAll('.form-section');
+        const roomCards = document.querySelectorAll('.room-card');
+        const ageCards = document.querySelectorAll('.age-card');
+        const wallColors = document.getElementById('wall-colors');
+        const floorColors = document.getElementById('floor-colors');
+        const wallCustom = document.getElementById('wall-custom');
+        const floorCustom = document.getElementById('floor-custom');
+        const ageGroupSection = document.getElementById('age-group-section');
+        const nextStep1 = document.getElementById('next-step-1');
+        const nextStep2 = document.getElementById('next-step-2');
+        const backStep2 = document.getElementById('back-step-2');
+        const loadingSection = document.getElementById('loading-section');
+        const resultsContainer = document.getElementById('results-container');
+        const startOver = document.getElementById('start-over');
+        const saveResults = document.getElementById('save-results');
+
+        // Photo upload elements
+        const photoMethod = document.getElementById('photo-method');
+        const colorMethod = document.getElementById('color-method');
+        const photoUploadSection = document.getElementById('photo-upload-section');
+        const colorSelectionSection = document.getElementById('color-selection-section');
+        const uploadArea = document.getElementById('upload-area');
+        const photoInput = document.getElementById('photo-input');
+        const uploadedPhotoDiv = document.getElementById('uploaded-photo');
+        const photoPreview = document.getElementById('photo-preview');
+        const photoName = document.getElementById('photo-name');
+        const removePhoto = document.getElementById('remove-photo');
+
+        // Room selection
+        roomCards.forEach(card => {
+            card.addEventListener('click', () => {
+                roomCards.forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                selectedRoom = card.dataset.room;
+
+                // Show age group for child's room
+                if (selectedRoom === 'child_bedroom') {
+                    ageGroupSection.style.display = 'block';
+                    nextStep1.disabled = selectedAge === '';
+                } else {
+                    ageGroupSection.style.display = 'none';
+                    selectedAge = 'adult';
+                    nextStep1.disabled = false;
+                }
+            });
+        });
+
+        // Age group selection
+        ageCards.forEach(card => {
+            card.addEventListener('click', () => {
+                ageCards.forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                selectedAge = card.dataset.age;
+                nextStep1.disabled = false;
+            });
+        });
+
+        // Color selection
+        function setupColorSelection(container, customPicker, type) {
+            const colorOptions = container.querySelectorAll('.color-option');
+
+            colorOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    colorOptions.forEach(o => o.classList.remove('selected'));
+                    option.classList.add('selected');
+
+                    if (type === 'wall') {
+                        selectedWallColor = option.dataset.color;
+                        customPicker.value = selectedWallColor;
+                    } else if (type === 'floor') {
+                        selectedFloorColor = option.dataset.color;
+                        customPicker.value = selectedFloorColor;
+                    }
+                });
+            });
+
+            customPicker.addEventListener('change', () => {
+                colorOptions.forEach(o => o.classList.remove('selected'));
+
+                if (type === 'wall') {
+                    selectedWallColor = customPicker.value;
+                } else if (type === 'floor') {
+                    selectedFloorColor = customPicker.value;
+                }
+            });
+        }
+
+        // Analysis method selection
+        photoMethod.addEventListener('click', () => {
+            analysisMethod = 'photo';
+            photoMethod.classList.add('active');
+            colorMethod.classList.remove('active');
+            photoUploadSection.style.display = 'block';
+            colorSelectionSection.style.display = 'none';
+        });
+
+        colorMethod.addEventListener('click', () => {
+            analysisMethod = 'color';
+            colorMethod.classList.add('active');
+            photoMethod.classList.remove('active');
+            photoUploadSection.style.display = 'none';
+            colorSelectionSection.style.display = 'block';
+        });
+
+        // Photo upload functionality
+        uploadArea.addEventListener('click', () => {
+            photoInput.click();
+        });
+
+        photoInput.addEventListener('change', (e) => {
+            handleFileSelect(e.target.files[0]);
+        });
+
+        // Drag and drop
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            handleFileSelect(e.dataTransfer.files[0]);
+        });
+
+        removePhoto.addEventListener('click', () => {
+            uploadedPhoto = null;
+            photoInput.value = '';
+            uploadedPhotoDiv.style.display = 'none';
+            uploadArea.style.display = 'block';
+        });
+
+        function handleFileSelect(file) {
+            if (!file) return;
+
+            // Validate file
+            if (!file.type.startsWith('image/')) {
+                alert('Lütfen bir resim dosyası seçin.');
+                return;
+            }
+
+            if (file.size > 10 * 1024 * 1024) {
+                alert('Dosya boyutu 10MB\'dan küçük olmalıdır.');
+                return;
+            }
+
+            uploadedPhoto = file;
+
+            // Show preview
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                photoPreview.src = e.target.result;
+                photoName.textContent = file.name;
+                uploadArea.style.display = 'none';
+                uploadedPhotoDiv.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        setupColorSelection(wallColors, wallCustom, 'wall');
+        setupColorSelection(floorColors, floorCustom, 'floor');
+
+        // Navigation
+        nextStep1.addEventListener('click', () => goToStep(2));
+        nextStep2.addEventListener('click', () => analyzeColors());
+        backStep2.addEventListener('click', () => goToStep(1));
+        startOver.addEventListener('click', () => resetForm());
+
+        function goToStep(step) {
+            currentStep = step;
+
+            // Update step indicators
+            steps.forEach((s, index) => {
+                s.classList.toggle('active', index + 1 <= step);
+            });
+
+            // Show/hide sections
+            sections.forEach((s, index) => {
+                s.classList.toggle('active', index + 1 === step);
+            });
+
+            if (step === 3) {
+                sections[2].classList.add('active');
+            }
+        }
+
+        // Color analysis
+        async function analyzeColors() {
+            // Show loading
+            sections[1].classList.remove('active');
+            loadingSection.classList.add('active');
+
+            // Update step
+            steps[2].classList.add('active');
+
+            try {
+                let data;
+
+                if (analysisMethod === 'photo' && uploadedPhoto) {
+                    // Photo analysis
+                    const formData = new FormData();
+                    formData.append('photo', uploadedPhoto);
+                    formData.append('roomType', selectedRoom);
+                    formData.append('ageGroup', selectedAge || 'adult');
+
+                    const response = await fetch('/api/photo/analyze', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Fotoğraf analizi başarısız');
+                    }
+
+                    data = await response.json();
+                } else {
+                    // Manual color analysis
+                    const requestData = {
+                        roomType: selectedRoom,
+                        ageGroup: selectedAge || 'adult',
+                        wallColor: selectedWallColor || null,
+                        floorColor: selectedFloorColor || null
+                    };
+
+                    const response = await fetch('/api/customer/analyze', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(requestData)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Analiz başarısız');
+                    }
+
+                    data = await response.json();
+                }
+
+                // Hide loading
+                loadingSection.classList.remove('active');
+
+                // Show results
+                displayResults(data);
+                goToStep(3);
+
+            } catch (error) {
+                console.error('Error:', error);
+                loadingSection.classList.remove('active');
+                alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+                goToStep(2);
+            }
+        }
+
+        // Display results
+        function displayResults(data) {
+            if (!data.success) {
+                resultsContainer.innerHTML = '<p>Sonuç bulunamadı. Lütfen tekrar deneyin.</p>';
+                return;
+            }
+
+            let recommendations = data.recommendations;
+
+            // Check if this is photo analysis result
+            if (data.extractedColors) {
+                // This is photo analysis - show extracted colors first
+                const extractedColorsHtml = `
+                    <div class="result-card extracted-colors">
+                        <div class="result-title">📸 Fotoğrafınızdan Çıkarılan Renkler</div>
+                        <div class="color-palette">
+                            ${data.extractedColors.map(color => `
+                                <div class="color-swatch" style="background-color: ${color.hex}"
+                                     title="${color.element}: ${color.hex} (${color.percentage}%)">
+                                    <span class="color-percentage">${color.percentage}%</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="result-description">
+                            AI tarafından ${data.extractedColors.length} renk tespit edildi
+                        </div>
+                        <div class="confidence-score">
+                            Güvenilirlik: %${Math.round(data.confidence * 100)}
+                        </div>
+                    </div>
+                `;
+                resultsContainer.innerHTML = extractedColorsHtml;
+            }
+
+            if (!recommendations || recommendations.length === 0) {
+                resultsContainer.innerHTML += '<p>Renk önerisi bulunamadı.</p>';
+                return;
+            }
+
+            const recommendationsHtml = recommendations.slice(0, 3).map(rec => `
+                <div class="result-card">
+                    <div class="result-title">${rec.name || getRecommendationTitle(rec)}</div>
+                    <div class="color-palette">
+                        ${Object.entries(rec.colors).map(([type, colorData]) => `
+                            <div class="color-swatch" style="background-color: ${colorData.hex}" title="${type}: ${colorData.hex}"></div>
+                        `).join('')}
+                    </div>
+                    <div class="result-description">
+                        ${rec.description || getRecommendationDescription(rec)}
+                    </div>
+                    <div class="confidence-score">
+                        Uygunluk: %${rec.confidence || 85}
+                    </div>
+                </div>
+            `).join('');
+
+            resultsContainer.innerHTML += recommendationsHtml;
+        }
+
+        function getRecommendationTitle(rec) {
+            const titles = {
+                'sanzo_harmony': 'Sanzo Wada Klasik Harmonisi',
+                'complementary': 'Tamamlayıcı Renk Uyumu',
+                'analogous': 'Benzer Renk Uyumu',
+                'neutral': 'Nötr Şıklık'
+            };
+            return titles[rec.type] || rec.name || 'Renk Önerisi';
+        }
+
+        function getRecommendationDescription(rec) {
+            if (rec.psychologicalEffects) {
+                return `Bu renk kombinasyonu ${rec.psychologicalEffects} hissi yaratır ve ${selectedRoom} için idealdir.`;
+            }
+            return rec.reasoning || 'Bu renkler odanız için uyumlu bir atmosfer yaratacaktır.';
+        }
+
+        // Reset form
+        function resetForm() {
+            currentStep = 1;
+            selectedRoom = '';
+            selectedAge = '';
+            selectedWallColor = '';
+            selectedFloorColor = '';
+            analysisMethod = 'color';
+            uploadedPhoto = null;
+
+            // Reset UI
+            roomCards.forEach(c => c.classList.remove('selected'));
+            ageCards.forEach(c => c.classList.remove('selected'));
+            document.querySelectorAll('.color-option').forEach(c => c.classList.remove('selected'));
+            ageGroupSection.style.display = 'none';
+            nextStep1.disabled = true;
+
+            // Reset photo upload
+            photoInput.value = '';
+            uploadedPhotoDiv.style.display = 'none';
+            uploadArea.style.display = 'block';
+            colorMethod.classList.add('active');
+            photoMethod.classList.remove('active');
+            photoUploadSection.style.display = 'none';
+            colorSelectionSection.style.display = 'block';
+
+            goToStep(1);
+        }
+
+        // Save results
+        saveResults.addEventListener('click', () => {
+            // Create summary text
+            const summary = `
+Renk Danışmanı Sonuçları
+Oda: ${getRoomName(selectedRoom)}
+${selectedAge !== 'adult' ? `Yaş Grubu: ${getAgeName(selectedAge)}` : ''}
+${selectedWallColor ? `Mevcut Duvar: ${selectedWallColor}` : ''}
+${selectedFloorColor ? `Mevcut Zemin: ${selectedFloorColor}` : ''}
+
+Önerilen renk kombinasyonları yukarıda gösterilmiştir.
+
+Sanzo Color Advisor - ${new Date().toLocaleDateString('tr-TR')}
+            `.trim();
+
+            // Download as text file
+            const blob = new Blob([summary], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `renk-onerisi-${selectedRoom}-${Date.now()}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            alert('Sonuçlarınız indirildi!');
+        });
+
+        function getRoomName(room) {
+            const names = {
+                'living_room': 'Oturma Odası',
+                'bedroom': 'Yatak Odası',
+                'child_bedroom': 'Çocuk Odası',
+                'study': 'Çalışma Odası',
+                'dining_room': 'Yemek Odası',
+                'bathroom': 'Banyo'
+            };
+            return names[room] || room;
+        }
+
+        function getAgeName(age) {
+            const names = {
+                '0-3': '0-3 Yaş (Bebek/Küçük çocuk)',
+                '4-6': '4-6 Yaş (Okul öncesi)',
+                '7-12': '7-12 Yaş (İlkokul çağı)',
+                '13-18': '13-18 Yaş (Genç/Ergen)'
+            };
+            return names[age] || age;
+        }
+    </script>
+</body>
+</html>

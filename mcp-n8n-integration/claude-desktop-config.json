@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "sanzo-n8n": {
+      "command": "python",
+      "args": ["-m", "sanzo_n8n_mcp.server"],
+      "env": {
+        "N8N_BASE_URL": "http://localhost:5678",
+        "N8N_WEBHOOK_BASE_URL": "http://localhost:5678/webhook",
+        "WEBHOOK_SERVER_URL": "http://localhost:3003",
+        "SANZO_API_URL": "http://localhost:3000",
+        "SANZO_PHOTO_ANALYSIS_URL": "http://localhost:3002",
+        "MCP_SERVER_NAME": "sanzo-n8n-mcp",
+        "MCP_LOG_LEVEL": "INFO",
+        "WORKFLOW_TIMEOUT_SECONDS": "300",
+        "MAX_CONCURRENT_WORKFLOWS": "5",
+        "ENABLE_WORKFLOW_MONITORING": "true"
+      }
+    }
+  }
+}

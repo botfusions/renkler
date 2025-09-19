@@ -1,0 +1,316 @@
+{
+  "name": "Customer Follow-up Sequences",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "/api/follow-up-trigger",
+        "httpMethod": "POST",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "followup-webhook",
+      "name": "Follow-up Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 400],
+      "webhookId": "follow-up-webhook-trigger"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.followUpType}}",
+              "operation": "equal",
+              "value2": "immediate"
+            }
+          ]
+        }
+      },
+      "id": "immediate-check",
+      "name": "Immediate Follow-up Check",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "amount": 24,
+        "unit": "hours"
+      },
+      "id": "wait-24h",
+      "name": "Wait 24 Hours",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [680, 500]
+    },
+    {
+      "parameters": {
+        "amount": 3,
+        "unit": "days"
+      },
+      "id": "wait-3d",
+      "name": "Wait 3 Days",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [680, 600]
+    },
+    {
+      "parameters": {
+        "amount": 7,
+        "unit": "days"
+      },
+      "id": "wait-7d",
+      "name": "Wait 1 Week",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [680, 700]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Determine follow-up sequence based on customer data and analysis results\nconst customerData = items[0].json;\n\n// Extract customer segment data\nconst leadScore = customerData.leadScore || 50;\nconst followUpAction = customerData.followUpAction || 'basic_followup';\nconst analysisType = customerData.analysisType || 'manual';\nconst roomType = customerData.roomType || 'living_room';\nconst hasEmail = customerData.customerEmail && customerData.customerEmail.length > 0;\n\n// Define follow-up sequences for different customer segments\nconst sequences = {\n  premium_consultation: {\n    name: 'Premium Consultation Sequence',\n    steps: [\n      {\n        delay: 'immediate',\n        type: 'welcome_premium',\n        subject: 'Premium Renk Danışmanlığı - Hoş Geldiniz!',\n        template: 'premium_welcome'\n      },\n      {\n        delay: '24h',\n        type: 'consultation_booking',\n        subject: 'Ücretsiz Konsültasyon Randevunuz',\n        template: 'consultation_booking'\n      },\n      {\n        delay: '3d',\n        type: 'design_tips',\n        subject: 'Size Özel Dekorasyon İpuçları',\n        template: 'personalized_tips'\n      },\n      {\n        delay: '7d',\n        type: 'portfolio_showcase',\n        subject: 'Benzer Projelerimiz - İlham Alın',\n        template: 'portfolio_showcase'\n      }\n    ]\n  },\n  \n  detailed_proposal: {\n    name: 'Detailed Proposal Sequence',\n    steps: [\n      {\n        delay: 'immediate',\n        type: 'analysis_complete',\n        subject: 'Renk Analizi Tamamlandı - Sonuçlarınız Hazır!',\n        template: 'analysis_complete'\n      },\n      {\n        delay: '24h',\n        type: 'detailed_recommendations',\n        subject: 'Detaylı Renk Önerileriniz',\n        template: 'detailed_recommendations'\n      },\n      {\n        delay: '3d',\n        type: 'implementation_guide',\n        subject: 'Renk Paletinizi Nasıl Uygulayın?',\n        template: 'implementation_guide'\n      },\n      {\n        delay: '7d',\n        type: 'feedback_request',\n        subject: 'Deneyiminizi Paylaşır mısınız?',\n        template: 'feedback_request'\n      }\n    ]\n  },\n  \n  additional_analysis: {\n    name: 'Additional Analysis Sequence',\n    steps: [\n      {\n        delay: 'immediate',\n        type: 'initial_results',\n        subject: 'İlk Analiz Sonuçlarınız',\n        template: 'initial_results'\n      },\n      {\n        delay: '24h',\n        type: 'improve_analysis',\n        subject: 'Daha Detaylı Analiz İster misiniz?',\n        template: 'improve_analysis'\n      },\n      {\n        delay: '3d',\n        type: 'photo_analysis_offer',\n        subject: 'Fotoğraf ile Daha Kesin Sonuçlar',\n        template: 'photo_analysis_offer'\n      }\n    ]\n  },\n  \n  basic_followup: {\n    name: 'Basic Follow-up Sequence',\n    steps: [\n      {\n        delay: 'immediate',\n        type: 'thank_you',\n        subject: 'Sanzo Color Advisor\\'ı Kullandığınız İçin Teşekkürler',\n        template: 'thank_you'\n      },\n      {\n        delay: '3d',\n        type: 'tips_and_tricks',\n        subject: 'Renk Seçiminde Pratik İpuçları',\n        template: 'color_tips'\n      },\n      {\n        delay: '7d',\n        type: 'newsletter_signup',\n        subject: 'Dekorasyon İpuçları Bültenimize Katılın',\n        template: 'newsletter_signup'\n      }\n    ]\n  }\n};\n\n// Select appropriate sequence\nlet selectedSequence = sequences[followUpAction] || sequences.basic_followup;\n\n// Customize sequence based on customer data\nconst customizedSequence = {\n  ...selectedSequence,\n  customerData: {\n    name: customerData.customerName || 'Değerli Müşterimiz',\n    email: customerData.customerEmail,\n    roomType: customerData.roomType,\n    roomTypeText: {\n      'living_room': 'Oturma Odası',\n      'bedroom': 'Yatak Odası',\n      'child_bedroom': 'Çocuk Odası',\n      'study': 'Çalışma Odası',\n      'dining_room': 'Yemek Odası',\n      'bathroom': 'Banyo',\n      'playroom': 'Oyun Odası'\n    }[customerData.roomType] || 'Odanız',\n    analysisType: analysisType,\n    leadScore: leadScore,\n    hasPhotos: analysisType === 'photo'\n  },\n  \n  // Add personalization variables\n  personalization: {\n    roomFocus: roomType === 'child_bedroom' ? 'çocuk dostu renkler' : 'uyumlu renk paleti',\n    analysisMethod: analysisType === 'photo' ? 'Fotoğraf analizi' : 'Manuel renk seçimi',\n    nextStepSuggestion: getNextStepSuggestion(followUpAction, analysisType)\n  }\n};\n\nfunction getNextStepSuggestion(action, type) {\n  if (action === 'premium_consultation') {\n    return 'Ücretsiz konsültasyon randevusu alarak projenizi detaylandıralım.';\n  }\n  if (action === 'detailed_proposal' && type === 'manual') {\n    return 'Fotoğraf analizi ile daha kesin öneriler almayı düşünün.';\n  }\n  if (action === 'additional_analysis') {\n    return 'Ek oda analizleri ile ev geneli uyum sağlayalım.';\n  }\n  return 'İletişimde kalalım ve size en uygun çözümü bulalım.';\n}\n\nreturn [{ json: customizedSequence }];"
+      },
+      "id": "determine-sequence",
+      "name": "Determine Follow-up Sequence",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 500]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Send immediate follow-up email\nconst sequenceData = items[0].json;\nconst immediateStep = sequenceData.steps.find(step => step.delay === 'immediate');\n\nif (!immediateStep || !sequenceData.customerData.email) {\n  return [{ json: { skipped: true, reason: 'No immediate step or no email' } }];\n}\n\nconst emailData = {\n  to: sequenceData.customerData.email,\n  toName: sequenceData.customerData.name,\n  subject: immediateStep.subject,\n  template: immediateStep.template,\n  templateData: {\n    customerName: sequenceData.customerData.name,\n    roomType: sequenceData.customerData.roomTypeText,\n    analysisType: sequenceData.customerData.analysisMethod,\n    roomFocus: sequenceData.personalization.roomFocus,\n    nextStep: sequenceData.personalization.nextStepSuggestion,\n    hasPhotos: sequenceData.customerData.hasPhotos,\n    leadScore: sequenceData.customerData.leadScore\n  },\n  sequenceType: 'immediate',\n  stepType: immediateStep.type\n};\n\nreturn [{ json: emailData }];"
+      },
+      "id": "immediate-email",
+      "name": "Send Immediate Email",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 200]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Process 24-hour follow-up\nconst sequenceData = items[0].json;\nconst step24h = sequenceData.steps.find(step => step.delay === '24h');\n\nif (!step24h || !sequenceData.customerData.email) {\n  return [{ json: { skipped: true, reason: 'No 24h step or no email' } }];\n}\n\nconst emailData = {\n  to: sequenceData.customerData.email,\n  toName: sequenceData.customerData.name,\n  subject: step24h.subject,\n  template: step24h.template,\n  templateData: {\n    customerName: sequenceData.customerData.name,\n    roomType: sequenceData.customerData.roomTypeText,\n    analysisType: sequenceData.customerData.analysisMethod,\n    roomFocus: sequenceData.personalization.roomFocus,\n    nextStep: sequenceData.personalization.nextStepSuggestion,\n    hasPhotos: sequenceData.customerData.hasPhotos,\n    leadScore: sequenceData.customerData.leadScore\n  },\n  sequenceType: '24h',\n  stepType: step24h.type\n};\n\nreturn [{ json: emailData }];"
+      },
+      "id": "followup-24h",
+      "name": "24h Follow-up Email",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 500]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Process 3-day follow-up\nconst sequenceData = items[0].json;\nconst step3d = sequenceData.steps.find(step => step.delay === '3d');\n\nif (!step3d || !sequenceData.customerData.email) {\n  return [{ json: { skipped: true, reason: 'No 3d step or no email' } }];\n}\n\nconst emailData = {\n  to: sequenceData.customerData.email,\n  toName: sequenceData.customerData.name,\n  subject: step3d.subject,\n  template: step3d.template,\n  templateData: {\n    customerName: sequenceData.customerData.name,\n    roomType: sequenceData.customerData.roomTypeText,\n    analysisType: sequenceData.customerData.analysisMethod,\n    roomFocus: sequenceData.personalization.roomFocus,\n    nextStep: sequenceData.personalization.nextStepSuggestion,\n    hasPhotos: sequenceData.customerData.hasPhotos,\n    leadScore: sequenceData.customerData.leadScore\n  },\n  sequenceType: '3d',\n  stepType: step3d.type\n};\n\nreturn [{ json: emailData }];"
+      },
+      "id": "followup-3d",
+      "name": "3-Day Follow-up Email",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 600]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Process 7-day follow-up\nconst sequenceData = items[0].json;\nconst step7d = sequenceData.steps.find(step => step.delay === '7d');\n\nif (!step7d || !sequenceData.customerData.email) {\n  return [{ json: { skipped: true, reason: 'No 7d step or no email' } }];\n}\n\nconst emailData = {\n  to: sequenceData.customerData.email,\n  toName: sequenceData.customerData.name,\n  subject: step7d.subject,\n  template: step7d.template,\n  templateData: {\n    customerName: sequenceData.customerData.name,\n    roomType: sequenceData.customerData.roomTypeText,\n    analysisType: sequenceData.customerData.analysisMethod,\n    roomFocus: sequenceData.personalization.roomFocus,\n    nextStep: sequenceData.personalization.nextStepSuggestion,\n    hasPhotos: sequenceData.customerData.hasPhotos,\n    leadScore: sequenceData.customerData.leadScore\n  },\n  sequenceType: '7d',\n  stepType: step7d.type\n};\n\nreturn [{ json: emailData }];"
+      },
+      "id": "followup-7d",
+      "name": "7-Day Follow-up Email",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 700]
+    },
+    {
+      "parameters": {
+        "authentication": "generic",
+        "genericAuthType": "httpBasicAuth",
+        "url": "https://api.emailjs.com/api/v1.0/email/send",
+        "sendBody": true,
+        "bodyContentType": "json",
+        "jsonParameters": "={{JSON.stringify({\n  service_id: 'sanzo_color_service',\n  template_id: $json.template,\n  user_id: 'sanzo_color_user',\n  template_params: {\n    to_email: $json.to,\n    to_name: $json.toName,\n    subject: $json.subject,\n    customer_name: $json.templateData.customerName,\n    room_type: $json.templateData.roomType,\n    analysis_type: $json.templateData.analysisType,\n    room_focus: $json.templateData.roomFocus,\n    next_step: $json.templateData.nextStep,\n    has_photos: $json.templateData.hasPhotos,\n    lead_score: $json.templateData.leadScore,\n    sequence_type: $json.sequenceType,\n    step_type: $json.stepType\n  }\n})}}"
+      },
+      "id": "send-email",
+      "name": "Send Follow-up Email",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1120, 400]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{JSON.stringify({\n  success: true,\n  message: 'Follow-up sequence initiated successfully',\n  sequenceName: $('Determine Follow-up Sequence').item.json.name,\n  stepsCount: $('Determine Follow-up Sequence').item.json.steps.length,\n  customerEmail: $('Determine Follow-up Sequence').item.json.customerData.email,\n  immediateEmailSent: true\n})}}"
+      },
+      "id": "success-response-seq",
+      "name": "Sequence Success Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1340, 400]
+    }
+  ],
+  "connections": {
+    "Follow-up Trigger": {
+      "main": [
+        [
+          {
+            "node": "Immediate Follow-up Check",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Determine Follow-up Sequence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Immediate Follow-up Check": {
+      "main": [
+        [
+          {
+            "node": "Send Immediate Email",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Determine Follow-up Sequence": {
+      "main": [
+        [
+          {
+            "node": "Wait 24 Hours",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Wait 3 Days",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Wait 1 Week",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Immediate Email": {
+      "main": [
+        [
+          {
+            "node": "Send Follow-up Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 24 Hours": {
+      "main": [
+        [
+          {
+            "node": "24h Follow-up Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 3 Days": {
+      "main": [
+        [
+          {
+            "node": "3-Day Follow-up Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 1 Week": {
+      "main": [
+        [
+          {
+            "node": "7-Day Follow-up Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "24h Follow-up Email": {
+      "main": [
+        [
+          {
+            "node": "Send Follow-up Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3-Day Follow-up Email": {
+      "main": [
+        [
+          {
+            "node": "Send Follow-up Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "7-Day Follow-up Email": {
+      "main": [
+        [
+          {
+            "node": "Send Follow-up Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Follow-up Email": {
+      "main": [
+        [
+          {
+            "node": "Sequence Success Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-19T12:15:00.000Z",
+  "updatedAt": "2025-09-19T12:15:00.000Z",
+  "settings": {
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "id": "sanzo-color",
+      "name": "Sanzo Color"
+    },
+    {
+      "id": "follow-up",
+      "name": "Follow-up"
+    },
+    {
+      "id": "email-sequence",
+      "name": "Email Sequence"
+    },
+    {
+      "id": "customer-nurturing",
+      "name": "Customer Nurturing"
+    }
+  ],
+  "meta": {
+    "description": "Müşteri segmentlerine göre otomatik takip e-postaları gönderen akıllı follow-up sequence workflow'u. 4 farklı customer journey tipi destekler.",
+    "version": "1.0.0",
+    "author": "Sanzo Color Advisor System"
+  }
+}

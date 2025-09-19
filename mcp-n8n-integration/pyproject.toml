@@ -1,0 +1,70 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sanzo-n8n-mcp"
+version = "1.0.0"
+description = "MCP server for N8N workflow integration with Sanzo Color Advisor"
+authors = [
+    {name = "Claude Code", email = "claude@anthropic.com"}
+]
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.11"
+dependencies = [
+    "fastmcp>=0.2.0",
+    "pydantic>=2.0.0",
+    "httpx>=0.24.0",
+    "asyncio",
+    "typing-extensions",
+    "python-dotenv>=1.0.0",
+    "aiofiles>=23.0.0",
+    "json-schema>=4.0.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-mock>=3.10.0",
+    "black>=23.0.0",
+    "mypy>=1.0.0",
+    "ruff>=0.1.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/sanzo-color-advisor/mcp-n8n-integration"
+Repository = "https://github.com/sanzo-color-advisor/mcp-n8n-integration"
+
+[project.scripts]
+sanzo-n8n-mcp = "sanzo_n8n_mcp.server:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["sanzo_n8n_mcp*"]
+
+[tool.black]
+line-length = 100
+target-version = ['py311']
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+select = ["E", "F", "W", "I", "N", "UP", "ANN", "S", "BLE", "FBT", "B", "A", "COM", "C4", "DTZ", "T10", "EM", "EXE", "ISC", "ICN", "G", "PIE", "T20", "PYI", "PT", "Q", "RSE", "RET", "SLF", "SIM", "TID", "TCH", "ARG", "PTH", "ERA", "PD", "PGH", "PL", "TRY", "NPY", "RUF"]
+ignore = ["ANN101", "ANN102", "COM812", "ISC001"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra -q --strict-markers --strict-config"
+markers = [
+    "unit: Unit tests",
+    "integration: Integration tests",
+    "n8n: N8N workflow tests"
+]

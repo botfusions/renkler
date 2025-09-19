@@ -626,6 +626,87 @@ class SanzoColorAPI {
             res.status(404).json(formatError('API endpoint not found', 404));
         });
 
+        // Static file serving
+        this.app.use(express.static('public'));
+
+        // Customer interface (redirect to customer.html)
+        this.app.get('/customer', (req, res) => {
+            res.sendFile(require('path').join(__dirname, '../public/customer.html'));
+        });
+
+        // Simplified customer API (optimized for simple UI)
+        this.app.post('/api/customer/analyze', async (req, res) => {
+            try {
+                const { roomType, ageGroup = 'adult', wallColor, floorColor } = req.body;
+
+                // Validate required inputs
+                if (!roomType) {
+                    return res.status(400).json({
+                        success: false,
+                        error: 'Oda tipi seçimi gereklidir'
+                    });
+                }
+
+                if (!validateRoomType(roomType)) {
+                    return res.status(400).json({
+                        success: false,
+                        error: 'Geçersiz oda tipi'
+                    });
+                }
+
+                // Prepare input for color agent
+                const input = {
+                    roomType,
+                    ageGroup,
+                    wall: wallColor || undefined,
+                    floor: floorColor || undefined
+                };
+
+                // If no colors provided, use defaults based on room type
+                if (!wallColor && !floorColor) {
+                    // Provide sensible defaults so analysis can proceed
+                    input.wall = '#F5F5F5'; // Light gray default wall
+                }
+
+                // Analyze color scheme
+                const analysis = await this.colorAgent.analyzeColorScheme(input);
+
+                if (!analysis.success) {
+                    return res.status(400).json({
+                        success: false,
+                        error: 'Renk analizi başarısız oldu'
+                    });
+                }
+
+                // Format response for customer UI (simplified)
+                const customerResponse = {
+                    success: true,
+                    recommendations: analysis.recommendations.slice(0, 3).map(rec => ({
+                        id: rec.id,
+                        name: this.translateRecommendationName(rec),
+                        type: rec.type,
+                        colors: rec.colors,
+                        confidence: rec.confidence,
+                        description: this.translateDescription(rec),
+                        psychologicalEffects: this.translatePsychology(rec.psychologicalEffects)
+                    })),
+                    roomInfo: {
+                        type: roomType,
+                        ageGroup,
+                        description: this.getRoomDescription(roomType, ageGroup)
+                    }
+                };
+
+                res.json(customerResponse);
+            } catch (error) {
+                console.error('Customer analysis error:', error);
+                res.status(500).json({
+                    success: false,
+                    error: 'Teknik bir hata oluştu. Lütfen tekrar deneyin.'
+                });
+            }
+        });
+
         // Root endpoint
         this.app.get('/', (req, res) => {
             res.json(formatResponse({
@@ -764,6 +845,91 @@ class SanzoColorAPI {
             .filter(color => color.distance <= threshold)
             .sort((a, b) => a.distance - b.distance)
             .slice(0, limit);
+    }
+
+    /**
+     * Helper functions for customer UI
+     */
+    translateRecommendationName(rec) {
+        const translations = {
+            'sanzo_harmony': 'Sanzo Wada Klasik Harmonisi',
+            'complementary': 'Tamamlayıcı Renk Uyumu',
+            'analogous': 'Benzer Renk Uyumu',
+            'neutral': 'Nötr Şıklık',
+            'sanzo_wada_classic_warm': 'Klasik Sıcak Tonlar',
+            'sanzo_tranquil_blues': 'Huzurlu Mavi Tonlar',
+            'sanzo_earth_tones': 'Doğal Toprak Renkleri',
+            'sanzo_gentle_greens': 'Yumuşak Yeşil Tonlar',
+            'sanzo_sunset_warmth': 'Gün Batımı Sıcaklığı'
+        };
+        return translations[rec.id] || translations[rec.type] || rec.name || 'Renk Önerisi';
+    }
+
+    translateDescription(rec) {
+        if (rec.reasoning) {
+            // Simple Turkish translations for common reasoning
+            return rec.reasoning
+                .replace(/Based on Sanzo Wada/g, 'Sanzo Wada\'nın teorisine göre')
+                .replace(/harmony/g, 'uyum')
+                .replace(/Creates visual interest/g, 'Görsel ilgi yaratır')
+                .replace(/complementary/g, 'tamamlayıcı')
+                .replace(/analogous/g, 'benzer')
+                .replace(/neutral/g, 'nötr');
+        }
+        return 'Bu renk kombinasyonu odanız için uyumlu bir atmosfer yaratacaktır.';
+    }
+
+    translatePsychology(effects) {
+        if (!effects) return 'Rahat ve dengeli';
+
+        const translations = {
+            'comfort': 'rahatlık',
+            'warmth': 'sıcaklık',
+            'calm': 'sakinlik',
+            'energy': 'enerji',
+            'creativity': 'yaratıcılık',
+            'focus': 'odaklanma',
+            'balance': 'denge',
+            'sophistication': 'şıklık',
+            'harmony': 'uyum',
+            'serenity': 'huzur',
+            'clarity': 'berraklık',
+            'stability': 'stabilite',
+            'growth': 'büyüme',
+            'rejuvenation': 'yenilenme'
+        };
+
+        return effects.split(', ').map(effect =>
+            translations[effect.trim()] || effect
+        ).join(', ');
+    }
+
+    getRoomDescription(roomType, ageGroup) {
+        const descriptions = {
+            'living_room': 'Misafirlerinizi ağırlamak ve aile ile keyifli vakit geçirmek için ideal',
+            'bedroom': 'Dinlenmek ve rahatlamak için tasarlanmış huzurlu bir alan',
+            'child_bedroom': 'Çocuğunuzun gelişimi ve mutluluğu için özel olarak düşünülmüş',
+            'study': 'Odaklanma ve verimli çalışma için optimize edilmiş',
+            'dining_room': 'Ailenizle lezzetli yemeklerin tadını çıkarabileceğiniz sosyal alan',
+            'bathroom': 'Temizlik ve ferahlık hissi veren rahatlatıcı bir mekan',
+            'playroom': 'Oyun ve eğlence için tasarlanmış yaratıcı bir alan'
+        };
+
+        let desc = descriptions[roomType] || 'Özel olarak tasarlanmış yaşam alanı';
+
+        if (ageGroup && ageGroup !== 'adult') {
+            const ageDescriptions = {
+                '0-3': 'bebeğinizin güvenli gelişimi',
+                '4-6': 'okul öncesi çocuğunuzun keşif yolculuğu',
+                '7-12': 'çocuğunuzun öğrenme maceraları',
+                '13-18': 'gençinizin kişilik gelişimi'
+            };
+            if (ageDescriptions[ageGroup]) {
+                desc += ` - ${ageDescriptions[ageGroup]} için uygun`;
+            }
+        }
+
+        return desc;
     }
 
     /**

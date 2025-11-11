@@ -355,24 +355,6 @@ export async function validateSession(req, res, next) {
   }
 }
 
-/**
- * Development-only bypass middleware
- * Allows bypassing authentication in development mode
- */
-export function devAuthBypass(req, res, next) {
-  if (process.env.NODE_ENV === 'development' && process.env.BYPASS_AUTH === 'true') {
-    // Create a mock user for development
-    req.user = {
-      id: 'dev-user-123',
-      email: 'dev@sanzo-color-advisor.com',
-      role: 'admin'
-    };
-    req.token = 'dev-token';
-    console.warn('⚠️  Authentication bypassed for development');
-  }
-  next();
-}
-
 export default {
   authenticateUser,
   optionalAuth,
@@ -381,6 +363,5 @@ export default {
   userRateLimit,
   validateApiKey,
   corsWithAuth,
-  validateSession,
-  devAuthBypass
+  validateSession
 };

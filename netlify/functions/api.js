@@ -1,8 +1,6 @@
 // Netlify Functions API Handler for Sanzo Color Advisor
 // Provides serverless API endpoints for color analysis and recommendations
 
-const { createProxyMiddleware } = require('http-proxy-middleware');
-
 // Simple in-memory color database for demo
 const SANZO_COLORS = {
   combinations: [

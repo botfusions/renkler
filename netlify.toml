@@ -95,13 +95,6 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
 
-# Plugin configuration
-[[plugins]]
-  package = "@netlify/plugin-lighthouse"
-
-  [plugins.inputs]
-    output_path = "reports/lighthouse.html"
-
 # Large Media configuration
 [large_media]
   # Enable Git LFS for large files

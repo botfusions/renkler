@@ -4,8 +4,9 @@
  */
 
 class ApiClient {
-    constructor(baseUrl = 'http://localhost:3000/api') {
-        this.baseUrl = baseUrl;
+    constructor(baseUrl = null) {
+        // Auto-detect environment if baseUrl not provided
+        this.baseUrl = baseUrl || this.getDefaultBaseUrl();
         this.requestTimeout = 30000; // 30 seconds
         this.retryAttempts = 3;
         this.retryDelay = 1000; // 1 second
@@ -18,6 +19,26 @@ class ApiClient {
         this.abortController = null;
 
         console.log('ApiClient initialized with base URL:', this.baseUrl);
+    }
+
+    /**
+     * Auto-detect the correct API base URL based on environment
+     */
+    getDefaultBaseUrl() {
+        // Check if running on Netlify
+        if (window.location.hostname.includes('netlify.app') ||
+            window.location.hostname.includes('netlify.com')) {
+            return '/.netlify/functions/api';
+        }
+
+        // Check if production deployment (custom domain)
+        if (window.location.hostname !== 'localhost' &&
+            window.location.hostname !== '127.0.0.1') {
+            return '/.netlify/functions/api';
+        }
+
+        // Default to localhost for development
+        return 'http://localhost:3000/api';
     }
 
     /**

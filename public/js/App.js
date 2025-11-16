@@ -15,7 +15,7 @@ class SanzoColorAdvisorApp {
 
         // Configuration
         this.config = {
-            apiBaseUrl: 'http://localhost:3000/api',
+            apiBaseUrl: this.detectApiBaseUrl(),
             loadingDelay: 500, // Minimum loading time for UX
             autoSave: true,
             maxRetries: 3
@@ -23,6 +23,29 @@ class SanzoColorAdvisorApp {
 
         console.log('Sanzo Color Advisor App initializing...');
         this.initialize();
+    }
+
+    /**
+     * Detect the correct API base URL based on environment
+     */
+    detectApiBaseUrl() {
+        // Check if running on Netlify
+        if (window.location.hostname.includes('netlify.app') ||
+            window.location.hostname.includes('netlify.com')) {
+            console.log('Detected Netlify environment');
+            return '/.netlify/functions/api';
+        }
+
+        // Check if production deployment (custom domain)
+        if (window.location.hostname !== 'localhost' &&
+            window.location.hostname !== '127.0.0.1') {
+            console.log('Detected production environment');
+            return '/.netlify/functions/api';
+        }
+
+        // Default to localhost for development
+        console.log('Detected local development environment');
+        return 'http://localhost:3000/api';
     }
 
     /**

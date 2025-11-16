@@ -358,8 +358,16 @@ export async function validateSession(req, res, next) {
 /**
  * Development-only bypass middleware
  * Allows bypassing authentication in development mode
+ * CRITICAL: This is disabled in production for security
  */
 export function devAuthBypass(req, res, next) {
+  // SECURITY: Explicitly check NODE_ENV is NOT production
+  if (process.env.NODE_ENV === 'production') {
+    // Never bypass auth in production
+    return next();
+  }
+
+  // Only allow bypass in development with explicit flag
   if (process.env.NODE_ENV === 'development' && process.env.BYPASS_AUTH === 'true') {
     // Create a mock user for development
     req.user = {

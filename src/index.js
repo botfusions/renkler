@@ -21,6 +21,7 @@ const MonitoringIntegration = require('./monitoring');
 // Import utilities
 const { validateColorInput, validateRoomType, validateAgeGroup } = require('./utils/validators');
 const { formatResponse, formatError } = require('./utils/responseHelpers');
+const { securityHeaders, sanitizeRequest, ipAuditLog } = require('./middleware/security');
 
 class SanzoColorAPI {
     constructor() {
@@ -45,16 +46,54 @@ class SanzoColorAPI {
      */
     setupMiddleware() {
         // Security middleware
+        // Generate nonce for inline styles (if needed)
+        this.app.use((req, res, next) => {
+            res.locals.cspNonce = Buffer.from(Math.random().toString()).toString('base64');
+            next();
+        });
+
         this.app.use(helmet({
             contentSecurityPolicy: {
                 directives: {
                     defaultSrc: ["'self'"],
-                    styleSrc: ["'self'", "'unsafe-inline'"],
+                    // Allow external stylesheets, but not unsafe-inline
+                    // Note: If you need inline styles, use nonce-based approach
+                    styleSrc: ["'self'"],
                     scriptSrc: ["'self'"],
                     imgSrc: ["'self'", "data:", "https:"],
+                    fontSrc: ["'self'", "data:"],
+                    connectSrc: ["'self'", process.env.REACT_APP_SUPABASE_URL || "*"],
+                    frameSrc: ["'none'"],
+                    objectSrc: ["'none'"],
+                    baseUri: ["'self'"],
+                    formAction: ["'self'"],
+                    upgradeInsecureRequests: process.env.NODE_ENV === 'production' ? [] : null,
                 },
             },
+            // Additional security headers
+            hsts: {
+                maxAge: 31536000,
+                includeSubDomains: true,
+                preload: true
+            },
+            frameguard: {
+                action: 'deny'
+            },
+            noSniff: true,
+            xssFilter: true,
+            referrerPolicy: {
+                policy: 'strict-origin-when-cross-origin'
+            }
         }));
+
+        // Additional security headers
+        this.app.use(securityHeaders);
+
+        // Request sanitization (prevent SQL injection, XSS)
+        this.app.use(sanitizeRequest);
+
+        // IP audit logging
+        this.app.use(ipAuditLog);
 
         // Compression
         this.app.use(compression());

@@ -33,10 +33,19 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey, {
 async function createAdminUser() {
   console.log('🚀 Creating admin user for Sanzo Color Advisor...\n');
 
-  const adminEmail = 'admin@sanzo-color-advisor.com';
-  const adminPassword = 'SanzoAdmin2025!';
-  const testEmail = 'test@sanzo-color-advisor.com';
-  const testPassword = 'TestUser2025!';
+  const adminEmail = process.env.ADMIN_EMAIL || 'admin@sanzo-color-advisor.com';
+  const adminPassword = process.env.ADMIN_PASSWORD;
+  const testEmail = process.env.TEST_EMAIL || 'test@sanzo-color-advisor.com';
+  const testPassword = process.env.TEST_PASSWORD;
+
+  // Validate required environment variables
+  if (!adminPassword || !testPassword) {
+    console.error('❌ Missing required environment variables:');
+    if (!adminPassword) console.error('   - ADMIN_PASSWORD is required');
+    if (!testPassword) console.error('   - TEST_PASSWORD is required');
+    console.error('\nPlease set these in your .env file or environment.');
+    process.exit(1);
+  }
 
   try {
     // Create admin user
@@ -127,13 +136,13 @@ async function createAdminUser() {
     console.log('┌─────────────────────────────────────────┐');
     console.log('│ ADMIN USER                              │');
     console.log('├─────────────────────────────────────────┤');
-    console.log(`│ Email:    ${adminEmail}    │`);
-    console.log(`│ Password: ${adminPassword}              │`);
+    console.log(`│ Email:    ${adminEmail.padEnd(29)}│`);
+    console.log('│ Password: [Set via ADMIN_PASSWORD]     │');
     console.log('├─────────────────────────────────────────┤');
     console.log('│ TEST USER                               │');
     console.log('├─────────────────────────────────────────┤');
-    console.log(`│ Email:    ${testEmail}     │`);
-    console.log(`│ Password: ${testPassword}               │`);
+    console.log(`│ Email:    ${testEmail.padEnd(29)}│`);
+    console.log('│ Password: [Set via TEST_PASSWORD]      │');
     console.log('└─────────────────────────────────────────┘');
 
     console.log('\n💡 Next Steps:');

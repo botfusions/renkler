@@ -142,7 +142,14 @@ async function main() {
 
   console.log('\n📋 Admin Login Credentials:');
   console.log('Email: admin@sanzo-color-advisor.com');
-  console.log('Password: SanzoAdmin2025!');
+  console.log('Password: [Set via ADMIN_PASSWORD environment variable]');
+
+  if (process.env.ADMIN_PASSWORD) {
+    console.log('Note: Admin password configured via environment variable');
+  } else {
+    console.log('⚠️  WARNING: ADMIN_PASSWORD not set in environment variables!');
+    console.log('   Set ADMIN_PASSWORD before creating admin user.');
+  }
 
   console.log('\n✅ Users created, schema pending manual creation');
 }
